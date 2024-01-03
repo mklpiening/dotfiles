@@ -121,4 +121,7 @@
 
     set clipboard+=unnamedplus
   '';
+  
+  # tmux
+  programs.tmux.enable = true;
 }
