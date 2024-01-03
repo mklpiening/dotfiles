@@ -26,6 +26,17 @@
   system.defaults.NSGlobalDomain.KeyRepeat = 1;
   # backwards compat; don't change
   system.stateVersion = 4;
+
+  # make nix handle brews and mac apps
+  homebrew = {
+   enable = true; 
+   caskArgs.no_quarantine = true;
+   global.brewfile = true;
+   masApps = {}; # mac app store apps
+   casks = [];
+   brews = [];
+   taps = [];
+  };
   
   users.users.malte.home = "/Users/malte";
 }
