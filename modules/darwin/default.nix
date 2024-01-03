@@ -32,10 +32,12 @@
     enable = true; 
     caskArgs.no_quarantine = true;
     global.brewfile = true;
-    masApps = {}; # mac app store apps
+    masApps = {
+      Magnet = 441258766;       # windows-like window 'snapping'
+    }; # mac app store apps
     casks = [ 
-      "easy-move-plus-resize"
-      "hiddenbar"
+      "easy-move-plus-resize"   # move and resize windows with hotkeys + mouse
+      "hiddenbar"               # hide items from the menu bar
     ];
     brews = [];
     taps = [];
