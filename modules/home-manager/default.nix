@@ -44,7 +44,25 @@
   programs.eza.enable = true;
 
   # git
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    diff-so-fancy.enable = true;
+    lfs.enable = true;
+    
+    userEmail = "mkl.piening@gmail.com";
+    userName = "Malte kleine Piening";
+
+    aliases = {
+      l1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
+	    l2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
+	    l = "!git l1";
+    };
+
+    extraConfig = {
+      init.defaultBranch = "main";
+      push.autoSetupRemote = true;
+    };
+  };
 
   # zsh
   programs.zsh = {

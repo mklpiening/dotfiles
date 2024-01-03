@@ -4,22 +4,28 @@
   environment.shells = with pkgs; [ bash zsh ];
   environment.loginShell = pkgs.zsh;
   environment.systemPackages = [ pkgs.coreutils ];
+
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
+  services.nix-daemon.enable = true;
+
   system.keyboard.enableKeyMapping = true;
   system.keyboard.remapCapsLockToEscape = true;
-  fonts.fontDir.enable = true; # DANGER
-  fonts.fonts =
-    [ (pkgs.nerdfonts.override { fonts = [ "Meslo" "Iosevka" ]; }) ];
-  services.nix-daemon.enable = true;
+
+  fonts.fontDir.enable = true;
+  fonts.fonts = [
+    (pkgs.nerdfonts.override { fonts = [ "Meslo" "Iosevka" ]; })
+  ];
+  
   system.defaults.finder.AppleShowAllExtensions = true;
   system.defaults.finder._FXShowPosixPathInTitle = false;
-  system.defaults.dock.autohide = true;
+
   system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;
   system.defaults.NSGlobalDomain.KeyRepeat = 1;
   # backwards compat; don't change
   system.stateVersion = 4;
+  
   users.users.malte.home = "/Users/malte";
 }
