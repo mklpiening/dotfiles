@@ -29,13 +29,16 @@
 
   # make nix handle brews and mac apps
   homebrew = {
-   enable = true; 
-   caskArgs.no_quarantine = true;
-   global.brewfile = true;
-   masApps = {}; # mac app store apps
-   casks = [];
-   brews = [];
-   taps = [];
+    enable = true; 
+    caskArgs.no_quarantine = true;
+    global.brewfile = true;
+    masApps = {}; # mac app store apps
+    casks = [ 
+      "easy-move-plus-resize"
+      "hiddenbar"
+    ];
+    brews = [];
+    taps = [];
   };
   
   users.users.malte.home = "/Users/malte";
