@@ -14,7 +14,7 @@
     [ (pkgs.nerdfonts.override { fonts = [ "Meslo" "Iosevka" ]; }) ];
   services.nix-daemon.enable = true;
   system.defaults.finder.AppleShowAllExtensions = true;
-  system.defaults.finder._FXShowPosixPathInTitle = true;
+  system.defaults.finder._FXShowPosixPathInTitle = false;
   system.defaults.dock.autohide = true;
   system.defaults.NSGlobalDomain.AppleShowAllExtensions = true;
   system.defaults.NSGlobalDomain.InitialKeyRepeat = 14;

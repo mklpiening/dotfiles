@@ -8,6 +8,9 @@
     curl      # data transfer
     less      # quick file viewer
     tldr      # 'man' for lazy people
+    neofetch  # nice system overview
+    ranger    # tui file explorer
+    m-cli     # handy mac tools
   ];
   home.sessionVariables = {
     PAGER = "less";
@@ -35,7 +38,7 @@
 
   # powerful fuzzy search
   programs.fzf.enable = true;
-  programs.fzf.enableZshIntegration = false; # these are provided with a third party plugin
+  programs.fzf.enableZshIntegration = true;
 
   # modern replacement for 'ls'
   programs.eza.enable = true;
@@ -88,4 +91,15 @@
       setopt HIST_SAVE_NO_DUPS
     '';
   };
+
+  # neovim
+  programs.neovim.enable = true;
+  programs.neovim.extraConfig = ''
+    set number
+    
+    set expandtab
+    set ts=2 sw=2
+
+    set clipboard+=unnamedplus
+  '';
 }
