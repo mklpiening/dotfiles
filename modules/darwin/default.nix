@@ -38,8 +38,13 @@
     casks = [ 
       "easy-move-plus-resize"   # move and resize windows with hotkeys + mouse
       "hiddenbar"               # hide items from the menu bar
+      "macfuse"                 # FUSE filesystems for macOS
+      "prusaslicer"             # prusa slicer
+      "freecad"                 # freecad
     ];
-    brews = [];
+    brews = [
+      # "ext4fuse"                # ext4 support through FUSE (currenty not supported :/)
+    ];
     taps = [];
   };
   
