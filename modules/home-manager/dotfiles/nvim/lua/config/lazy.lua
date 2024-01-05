@@ -6,6 +6,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+local pluginsdir
+if vim.g.vscode then
+  -- running as VSCode extension
+  pluginsdir = "plugins.vscode"
+else
+  -- running as normal nvim
+  pluginsdir = "plugins.normal"
+end
+
 require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
@@ -15,7 +24,7 @@ require("lazy").setup({
     -- { import = "lazyvim.plugins.extras.lang.json" },
     -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
     -- import/override with your plugins
-    { import = "plugins" },
+    { import = pluginsdir },
   },
   defaults = {
     -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
