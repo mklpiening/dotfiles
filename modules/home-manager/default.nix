@@ -91,7 +91,6 @@
       theme = "bureau";
     };
     shellAliases = {
-      vim = "nvim";
       ls = "eza";
       ll = "eza -lbF --git";
       la = "eza -lbhHigmuSa --time-style=long-iso --git --color-scale";
@@ -120,15 +119,6 @@
     plugins = with pkgs.vimPlugins; [
       LazyVim
     ];
-
-    # extraConfig = ''
-    #   set number
-    #   
-    #   set expandtab
-    #   set ts=2 sw=2
-
-    #   set clipboard+=unnamedplus
-    # '';
   };
   home.file."${config.xdg.configHome}/nvim" = {
     source = ./dotfiles/nvim;
