@@ -13,6 +13,8 @@
   system.keyboard.enableKeyMapping = true;
   system.keyboard.remapCapsLockToEscape = true;
 
+  programs.nix-index.enable = true;
+
   fonts.fontDir.enable = true;
   fonts.fonts = [
     (pkgs.nerdfonts.override { fonts = [ "Meslo" "Iosevka" ]; })

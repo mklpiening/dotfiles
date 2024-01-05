@@ -11,6 +11,8 @@
     neofetch  # nice system overview
     ranger    # tui file explorer
     m-cli     # handy mac tools
+    comma     # quickly run commands without searching for the correct package name
+    ncdu      # more performant "du"
   ];
   home.sessionVariables = {
     PAGER = "less";
