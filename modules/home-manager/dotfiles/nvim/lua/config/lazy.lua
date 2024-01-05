@@ -6,6 +6,7 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+-- change pluginsdir depending on whether we are running in vscode or normal nvim mode
 local pluginsdir
 if vim.g.vscode then
   -- running as VSCode extension
