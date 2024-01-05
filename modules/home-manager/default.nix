@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, config, ... }: {
   # Don't change this when you change package input. Leave it alone.
   home.stateVersion = "23.11";
   # specify my home-manager configs
@@ -112,15 +112,28 @@
   };
 
   # neovim
-  programs.neovim.enable = true;
-  programs.neovim.extraConfig = ''
-    set number
-    
-    set expandtab
-    set ts=2 sw=2
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
 
-    set clipboard+=unnamedplus
-  '';
+    plugins = with pkgs.vimPlugins; [
+      LazyVim
+    ];
+
+    # extraConfig = ''
+    #   set number
+    #   
+    #   set expandtab
+    #   set ts=2 sw=2
+
+    #   set clipboard+=unnamedplus
+    # '';
+  };
+  home.file."${config.xdg.configHome}/nvim" = {
+    source = ./dotfiles/nvim;
+    recursive = true;
+  };
   
   # tmux
   programs.tmux.enable = true;
