@@ -4,7 +4,17 @@
 
 if vim.g.vscode then
   -- running as VSCode extension
-  -- local vscode = require('vscode-neovim')
-  -- vim.keymap.set({"n", "x"}, "<Space>", vscode.notify('whichkey.show'), { silent = true })
+  local wrap = function(func, ...)
+    local args = {...}
+    return function()
+      func(unpack(args))
+    end
+  end
+
+  local vscode = require('vscode-neovim')
+
+  -- getting vscodes whichkey plugin to work
+  vim.keymap.set({"n", "x"}, "<Space>", wrap(vscode.action, 'whichkey.show'), { silent = true })
 else
+  -- normal nvim mode
 end
