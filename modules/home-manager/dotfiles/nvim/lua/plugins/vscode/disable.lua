@@ -14,18 +14,9 @@ return {
   { "MunifTanjim/nui.nvimgoolord/alpha-nvim", enabled = false },
   { "MunifTanjim/nui.nvimnvimdev/dashboard-nvim", enabled = false },
   { "MunifTanjim/nui.nvim", enabled = false },
-  
+
   -- editor
   { "nvim-neo-tree/neo-tree.nvim", enabled = false },
   { "lewis6991/gitsigns.nvim", enabled = false },
-  
-  -- colorscheme
-  { "folke/tokyonight.nvim", enabled = false },
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      termguicolors = false,
-      colorscheme = "",
-    },
-  }  
+  { "folke/which-key.nvim", enabled = false },
 }
