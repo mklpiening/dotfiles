@@ -46,6 +46,13 @@
   # modern replacement for 'ls'
   programs.eza.enable = true;
 
+  # modern 'cd' replacement
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    enableBashIntegration = true;
+  };
+
   # git
   programs.git = {
     enable = true;
@@ -101,6 +108,8 @@
       lt = "eza --tree --level=2";
       llm = "eza -lbGF --git --sort=modified";
       lld = "eza -lbhHFGmuSa --group-directories-first";
+      
+      cd = "z"; # replace 'cd' with 'z'
     };
     initExtra = ''
       setopt HIST_EXPIRE_DUPS_FIRST
