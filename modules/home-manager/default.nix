@@ -18,6 +18,9 @@
     m-cli     # handy mac tools
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
+
+    python311Full # python
+    virtualenv    # python virtualenv
   ];
   home.sessionVariables = {
     PAGER = "less";
