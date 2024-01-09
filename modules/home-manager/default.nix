@@ -19,6 +19,8 @@
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
 
+    vcstool   # tool for multi repo use
+
     python311Full # python
     virtualenv    # python virtualenv
   ];
@@ -128,4 +130,16 @@
       setopt HIST_SAVE_NO_DUPS
     '';
   };
+
+  # EurKEY keyboard layout
+  home.file."Library/Keyboard Layouts" = {
+    source = pkgs.fetchFromGitHub {
+      owner = "jonasdiemer";
+      repo = "EurKEY-Mac";
+      rev = "498a7203309d1cfdb3a81960edc812c38fd8acf3";
+      sha256 = "sha256-/Tmm9dkE1HILryzQ9e6or+Z9geCzS5yZ8GLN3ak22pU=";
+    };
+    recursive = true;
+  };
+
 }
