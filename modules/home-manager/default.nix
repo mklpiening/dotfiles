@@ -66,7 +66,12 @@
   # git
   programs.git = {
     enable = true;
-    diff-so-fancy.enable = true;
+    # diff-so-fancy.enable = true;
+    delta.enable = true;
+    delta.options = {
+      side-by-side = true;
+    };
+
     lfs.enable = true;
     
     userEmail = "mkl.piening@gmail.com";
