@@ -47,7 +47,7 @@
 
   # nicer 'cat'
   programs.bat.enable = true;
-  programs.bat.config.theme = "TwoDark";
+  programs.bat.config.theme = "base16-256";
 
   # powerful fuzzy search
   programs.fzf.enable = true;
@@ -70,6 +70,7 @@
     delta.enable = true;
     delta.options = {
       side-by-side = true;
+      syntax-theme = "base16";
     };
 
     lfs.enable = true;
