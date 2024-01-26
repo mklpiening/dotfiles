@@ -43,11 +43,17 @@
       "macfuse"                 # FUSE filesystems for macOS
       "prusaslicer"             # prusa slicer
       "freecad"                 # freecad
+      "meshlab"                 # meshlab
+      "cloudcompare"            # cloudcompare
     ];
     brews = [
-      # "ext4fuse"                # ext4 support through FUSE (currenty not supported :/)
+      # "ext4fuse"              # ext4 support through FUSE (currenty not supported :/)
+      "iproute2mac"             # 'ip' command on mac
+      "gz-fortress"             # gazebo
     ];
-    taps = [];
+    taps = [
+      "osrf/simulation"
+    ];
   };
   
   users.users.malte.home = "/Users/malte";
