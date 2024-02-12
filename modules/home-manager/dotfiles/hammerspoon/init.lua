@@ -30,3 +30,21 @@ for key, app in pairs(applicationHotkeys) do
 		hs.application.launchOrFocus(app)
 	end)
 end
+
+-- remap hjkl to arrow keys
+
+local function pressFn(mods, key)
+	if key == nil then
+		key = mods
+		mods = {}
+	end
+
+	return function()
+		hs.eventtap.keyStroke(mods, key, 1000)
+	end
+end
+
+hs.hotkey.bind(hyper, "h", pressFn("left"), nil, pressFn("left"))
+hs.hotkey.bind(hyper, "j", pressFn("down"), nil, pressFn("down"))
+hs.hotkey.bind(hyper, "k", pressFn("up"), nil, pressFn("up"))
+hs.hotkey.bind(hyper, "l", pressFn("right"), nil, pressFn("right"))
