@@ -148,4 +148,9 @@
     recursive = true;
   };
 
+  # hammerspoon config
+  home.file.".hammerspoon" = {
+    source = ./dotfiles/hammerspoon;
+    recursive = true;
+  };
 }
