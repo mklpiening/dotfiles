@@ -124,6 +124,7 @@
       lt = "eza --tree --level=2";
       llm = "eza -lbGF --git --sort=modified";
       lld = "eza -lbhHFGmuSa --group-directories-first";
+      docker_rm_dangling = "docker rmi $(docker images --filter 'dangling=true' -q --no-trunc)";
       
       cd = "z"; # replace 'cd' with 'z'
     };
@@ -138,15 +139,16 @@
   };
 
   # EurKEY keyboard layout
-  home.file."Library/Keyboard Layouts" = {
-    source = pkgs.fetchFromGitHub {
-      owner = "jonasdiemer";
-      repo = "EurKEY-Mac";
-      rev = "498a7203309d1cfdb3a81960edc812c38fd8acf3";
-      sha256 = "sha256-/Tmm9dkE1HILryzQ9e6or+Z9geCzS5yZ8GLN3ak22pU=";
-    };
-    recursive = true;
-  };
+  # currently installed manually to reach global Key Layouts
+  # home.file."Library/Keyboard Layouts" = {
+  #   source = pkgs.fetchFromGitHub {
+  #     owner = "jonasdiemer";
+  #     repo = "EurKEY-Mac";
+  #     rev = "498a7203309d1cfdb3a81960edc812c38fd8acf3";
+  #     sha256 = "sha256-/Tmm9dkE1HILryzQ9e6or+Z9geCzS5yZ8GLN3ak22pU=";
+  #   };
+  #   recursive = true;
+  # };
 
   # hammerspoon config
   home.file.".hammerspoon" = {

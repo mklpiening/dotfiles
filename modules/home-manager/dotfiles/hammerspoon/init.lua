@@ -11,23 +11,64 @@ hs.notify.new({ title = "Hammerspoon", informativeText = "Config loaded" }):send
 local applicationHotkeys = {
 	--------------------
 	-- LEFT HAND
-	w = "iTerm",
+	d = "iTerm",
 	e = "Visual Studio Code",
 	a = "Arc",
 	r = "Foxglove Studio",
 	f = "Finder",
-	c = "FreeCAD",
 	g = "Gather",
+	s = "Spotify",
 
 	--------------------
 	-- RIGHT HAND
 	n = "Obsidian",
-	m = "Spotify",
+	k = "FreeCAD",
+}
+
+local iTermHotkeys = {
+	--------------------
+	-- LEFT HAND
+	-- p = "test",
+
+	--------------------
+	-- RIGHT HAND
 }
 
 for key, app in pairs(applicationHotkeys) do
+	-- bind application
 	hs.hotkey.bind(hyper, key, function()
 		hs.application.launchOrFocus(app)
+	end)
+end
+
+local function find_or_start_app(app)
+	-- search for app
+	local result = { hs.application.find(app) }
+	if result[1] ~= nil then
+		return result[1]
+	end
+	-- app does not exist
+
+	-- start app
+	hs.application.open(app)
+	result = { hs.application.find(app) }
+	return result[1]
+end
+
+for key, title in pairs(iTermHotkeys) do
+	-- find or launch iTerm window
+	hs.hotkey.bind(hyper, key, function()
+		local iterm = find_or_start_app("iTerm")
+		local clicked_menu_item = iterm:selectMenuItem({ "Window" })
+		print(clicked_menu_item)
+		local windows = { iterm:findWindow(title) }
+		for k, v in pairs(windows) do
+			if v == nil then
+				print("nil")
+			else
+				print(k, v:title())
+			end
+		end
 	end)
 end
 
