@@ -21,6 +21,8 @@
 
     vcstool   # tool for multi repo use
 
+    lazydocker # useful tui for docker
+
     python311Full # python
     virtualenv    # python virtualenv
   ];
@@ -135,6 +137,8 @@
       setopt HIST_IGNORE_SPACE
       setopt HIST_FIND_NO_DUPS
       setopt HIST_SAVE_NO_DUPS
+
+      source /Users/malte/Documents/nr/dev/dev_tooling/setup/host/setup.zsh
     '';
   };
 
