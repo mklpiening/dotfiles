@@ -15,7 +15,7 @@ local applicationHotkeys = {
 	e = "Visual Studio Code",
 	a = "Arc",
 	r = "Foxglove Studio",
-	f = "Finder",
+	-- f = "Finder",
 	g = "Gather",
 	s = "Spotify",
 
@@ -187,6 +187,15 @@ hs.hotkey.bind(hyper, "return", function()
 			o_window_rect.y = d_o_window_pos.y + o_window_rect.y
 		end
 	end
+end)
+
+-- scan focussed window to grid
+hs.hotkey.bind(hyper, "f", function()
+	local f_application = hs.application.frontmostApplication()
+	local f_window = f_application:focusedWindow()
+
+	-- snap window
+	f_window:toggleFullScreen()
 end)
 
 -- snap all windows on current screen to grid
