@@ -19,6 +19,8 @@
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
 
+    # lunarvim # nvim distribution
+
     vcstool   # tool for multi repo use
 
     lazydocker # useful tui for docker

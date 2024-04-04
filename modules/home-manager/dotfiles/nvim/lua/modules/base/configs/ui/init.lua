@@ -1,0 +1,1390 @@
+local funcs = require("core.funcs")
+local icons = require("configs.base.ui.icons")
+
+local config = {}
+
+config.nvim_web_devicons = function()
+    require("nvim-web-devicons").setup()
+end
+
+config.noice_nvim = function()
+    local noice_status_ok, noice = pcall(require, "noice")
+    if not noice_status_ok then
+        return
+    end
+    noice.setup({
+        cmdline = {
+            enabled = true,
+            view = "cmdline",
+            format = {
+                cmdline = { pattern = "^:", icon = "" },
+                search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+                search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+                filter = { pattern = "^:%s*!", icon = "$", lang = "bash" },
+                lua = { pattern = "^:%s*lua%s+", icon = "", lang = "lua" },
+                help = { pattern = "^:%s*h%s+", icon = "󰋖" },
+                calculator = { pattern = "^:=", icon = "󰃬", lang = "vimnormal" },
+                input = {},
+            },
+        },
+        messages = {
+            enabled = true,
+            view = "mini",
+            view_error = "mini",
+            view_warn = "mini",
+            view_history = "split",
+            view_search = false,
+        },
+        popupmenu = {
+            enabled = true,
+            backend = "mini",
+            kind_icons = {},
+        },
+        commands = {
+            history = {
+                view = "split",
+                opts = { enter = true, format = "details" },
+                filter = {
+                    any = {
+                        { event = "notify" },
+                        { error = true },
+                        { warning = true },
+                        { event = "msg_show", kind = { "" } },
+                        { event = "lsp", kind = "message" },
+                    },
+                },
+            },
+            last = {
+                view = "popup",
+                opts = { enter = true, format = "details" },
+                filter = {
+                    any = {
+                        { event = "notify" },
+                        { error = true },
+                        { warning = true },
+                        { event = "msg_show", kind = { "" } },
+                        { event = "lsp", kind = "message" },
+                    },
+                },
+                filter_opts = { count = 1 },
+            },
+            errors = {
+                view = "popup",
+                opts = { enter = true, format = "details" },
+                filter = { error = true },
+                filter_opts = { reverse = true },
+            },
+        },
+        notify = {
+            enabled = false,
+            view = "notify",
+        },
+        lsp = {
+            progress = {
+                enabled = true,
+                format = "lsp_progress",
+                format_done = "lsp_progress_done",
+                throttle = 1000 / 30,
+                view = "mini",
+            },
+            override = {
+                ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+                ["vim.lsp.util.stylize_markdown"] = true,
+                ["cmp.entry.get_documentation"] = false,
+            },
+            hover = {
+                enabled = true,
+                view = nil,
+                opts = {},
+            },
+            signature = {
+                enabled = true,
+                auto_open = {
+                    enabled = true,
+                    trigger = true,
+                    luasnip = true,
+                    throttle = 50,
+                },
+                view = nil,
+                opts = {},
+            },
+            message = {
+                enabled = true,
+                view = "notify",
+                opts = {},
+            },
+            documentation = {
+                view = "hover",
+                opts = {
+                    lang = "markdown",
+                    replace = true,
+                    render = "plain",
+                    format = { "{message}" },
+                    win_options = { concealcursor = "n", conceallevel = 3 },
+                },
+            },
+        },
+        markdown = {
+            hover = {
+                ["|(%S-)|"] = vim.cmd.help,
+                ["%[.-%]%((%S-)%)"] = require("noice.util").open,
+            },
+            highlights = {
+                ["|%S-|"] = "@text.reference",
+                ["@%S+"] = "@parameter",
+                ["^%s*(Parameters:)"] = "@text.title",
+                ["^%s*(Return:)"] = "@text.title",
+                ["^%s*(See also:)"] = "@text.title",
+                ["{%S-}"] = "@parameter",
+            },
+        },
+        health = {
+            checker = true,
+        },
+        smart_move = {
+            enabled = true,
+            excluded_filetypes = { "cmp_menu", "cmp_docs", "notify" },
+        },
+        presets = {
+            bottom_search = false,
+            command_palette = false,
+            long_message_to_split = false,
+            inc_rename = false,
+            lsp_doc_border = false,
+        },
+        views = {
+            popupmenu = {
+                zindex = 65,
+                position = "auto",
+                size = {
+                    width = "auto",
+                },
+                win_options = {
+                    winhighlight = {
+                        Normal = "NoiceBody",
+                        FloatBorder = "NoiceBorder",
+                        CursorLine = "PmenuSel",
+                        PmenuMatch = "Special",
+                    },
+                },
+                border = {
+                    padding = { 0, 1 },
+                },
+            },
+            notify = {
+                backend = "notify",
+                replace = true,
+                format = "notify",
+            },
+            split = {
+                backend = "split",
+                enter = false,
+                relative = "editor",
+                position = "bottom",
+                size = "20%",
+                close = {
+                    keys = { "q", "<ESC>" },
+                },
+                win_options = {
+                    winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
+                    wrap = true,
+                },
+            },
+            vsplit = {
+                backend = "split",
+                enter = false,
+                relative = "editor",
+                position = "right",
+                size = "20%",
+                close = {
+                    keys = { "q", "<ESC>" },
+                },
+                win_options = {
+                    winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
+                },
+            },
+            popup = {
+                backend = "popup",
+                relative = "editor",
+                close = {
+                    events = { "BufLeave" },
+                    keys = { "q" },
+                },
+                enter = true,
+                border = {
+                    style = "rounded",
+                },
+                position = "50%",
+                size = {
+                    width = "120",
+                    height = "20",
+                },
+                win_options = {
+                    winhighlight = { Normal = "NoiceBody", FloatBorder = "NoiceBorder" },
+                },
+            },
+            hover = {
+                view = "popup",
+                relative = "cursor",
+                zindex = 45,
+                enter = false,
+                anchor = "auto",
+                size = {
+                    width = "auto",
+                    height = "auto",
+                    max_height = 20,
+                    max_width = 120,
+                },
+                position = { row = 1, col = 0 },
+                win_options = {
+                    wrap = true,
+                    linebreak = true,
+                },
+            },
+            cmdline = {
+                backend = "popup",
+                relative = "editor",
+                position = {
+                    row = "100%",
+                    col = 0,
+                },
+                size = {
+                    height = "auto",
+                    width = "100%",
+                },
+                border = {
+                    style = "none",
+                },
+                win_options = {
+                    winhighlight = {
+                        Normal = "NoiceBody",
+                        FloatBorder = "NoiceBorder",
+                        IncSearch = "IncSearch",
+                        Search = "Search",
+                    },
+                },
+            },
+            mini = {
+                backend = "mini",
+                relative = "editor",
+                align = "message-right",
+                timeout = 2000,
+                reverse = false,
+                position = {
+                    row = -2,
+                    col = "100%",
+                },
+                size = "auto",
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                },
+                zindex = 60,
+                win_options = {
+                    winblend = 0,
+                    winhighlight = {
+                        Normal = "NoiceBody",
+                        IncSearch = "IncSearch",
+                        Search = "Search",
+                        FloatBorder = "NoiceBody",
+                    },
+                },
+            },
+            cmdline_popup = {
+                backend = "popup",
+                relative = "editor",
+                focusable = false,
+                enter = false,
+                zindex = 60,
+                position = {
+                    row = "90%",
+                    col = "50%",
+                },
+                size = {
+                    min_width = 60,
+                    width = "auto",
+                    height = "auto",
+                },
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    padding = { 0, 1 },
+                },
+                win_options = {
+                    winhighlight = {
+                        Normal = "NoiceBody",
+                        FloatBorder = "NoiceBorder",
+                        IncSearch = "IncSearch",
+                        Search = "Search",
+                    },
+                    cursorline = false,
+                },
+            },
+            confirm = {
+                backend = "popup",
+                relative = "editor",
+                focusable = false,
+                align = "center",
+                enter = false,
+                zindex = 60,
+                format = { "{confirm}" },
+                position = {
+                    row = "50%",
+                    col = "50%",
+                },
+                size = "auto",
+                border = {
+                    style = { " ", " ", " ", " ", " ", " ", " ", " " },
+                    padding = { 0, 1, 0, 1 },
+                    text = {
+                        top = " CONFIRM: ",
+                    },
+                },
+                win_options = {
+                    winhighlight = {
+                        Normal = "NoiceBody",
+                        FloatBorder = "NoiceBorder",
+                    },
+                },
+            },
+        },
+        routes = {
+            {
+                view = "cmdline",
+                filter = {
+                    event = "cmdline",
+                    find = "^%s*[/?]",
+                },
+            },
+            {
+                view = "confirm",
+                filter = {
+                    any = {
+                        { event = "msg_show", kind = "confirm" },
+                        { event = "msg_show", kind = "confirm_sub" },
+                    },
+                },
+            },
+            {
+                view = "split",
+                filter = {
+                    any = {
+                        { event = "msg_history_show" },
+                    },
+                },
+            },
+            {
+                view = "mini",
+                filter = {
+                    event = "msg_show",
+                    kind = "",
+                    find = "written",
+                },
+                opts = { skip = true },
+            },
+            {
+                view = "mini",
+                filter = {
+                    event = "msg_show",
+                    kind = { "", "echo", "echomsg" },
+                },
+                opts = {
+                    replace = false,
+                    merge = false,
+                    title = "LVIM IDE",
+                },
+            },
+            {
+                view = "mini",
+                filter = { error = true },
+                opts = {
+                    skip = true,
+                },
+            },
+            {
+                view = "mini",
+                filter = { warning = true },
+                opts = {
+                    skip = true,
+                },
+            },
+            {
+                view = "mini",
+                filter = { event = "notify" },
+                opts = {
+                    title = "LVIM IDE",
+                },
+            },
+            {
+                view = "notify",
+                filter = {
+                    event = "noice",
+                    kind = { "stats", "debug" },
+                },
+                opts = {
+                    buf_options = { filetype = "lua" },
+                    replace = false,
+                    title = "LVIM IDE",
+                },
+            },
+            {
+                view = "mini",
+                filter = { event = "lsp", kind = "progress" },
+            },
+        },
+        status = {},
+        format = {},
+    })
+    vim.keymap.set({ "n", "i" }, "<C-d>", function()
+        if not require("noice.lsp").scroll(4) then
+            return "<C-d>"
+        end
+    end, { silent = true, expr = true, desc = "Scroll Down" })
+    vim.keymap.set({ "n", "i" }, "<C-u>", function()
+        if not require("noice.lsp").scroll(-4) then
+            return "<C-u>"
+        end
+    end, { silent = true, expr = true, desc = "Scroll Up" })
+end
+
+config.alpha_nvim = function()
+    local alpha_status_ok, alpha = pcall(require, "alpha")
+    if not alpha_status_ok then
+        return
+    end
+    local alpha_themes_dashboard_status_ok, alpha_themes_dashboard = pcall(require, "alpha.themes.dashboard")
+    if not alpha_themes_dashboard_status_ok then
+        return
+    end
+    math.randomseed(os.time())
+    local function button(sc, txt, keybind, keybind_opts)
+        local b = alpha_themes_dashboard.button(sc, txt, keybind, keybind_opts)
+        b.opts.hl = "AlphaButton"
+        b.opts.hl_shortcut = "AlphaButtonShortcut"
+        return b
+    end
+    local function footer()
+        local global = require("core.global")
+        local plugins = require("lazy").stats().count
+        local startup_time = require("lazy").stats().startuptime
+        local v = vim.version()
+        local datetime = os.date(" %d-%m-%Y")
+        local platform
+        if global.os == "linux" then
+            platform = " Linux"
+        elseif global.os == "mac" then
+            platform = " macOS"
+        else
+            platform = ""
+        end
+        return string.format(
+            icons.common.plugins
+                .. " %d plugins  "
+                .. icons.common.time
+                .. "%d ms  "
+                .. icons.common.vim
+                .. "v%d.%d.%d  %s  %s",
+            plugins,
+            startup_time,
+            v.major,
+            v.minor,
+            v.patch,
+            platform,
+            datetime
+        )
+    end
+    alpha_themes_dashboard.section.header.val = {
+        " 888     Y88b      / 888      e    e      ",
+        " 888      Y88b    /  888     d8b  d8b     ",
+        " 888       Y88b  /   888    d888bdY88b    ",
+        " 888        Y888/    888   / Y88Y Y888b   ",
+        " 888         Y8/     888  /   YY   Y888b  ",
+        " 888____      Y      888 /          Y888b ",
+    }
+    alpha_themes_dashboard.section.header.opts.hl = "AlphaHeader"
+    alpha_themes_dashboard.section.buttons.val = {
+        button("SPC SPC b", icons.common.project .. " Projects", ":CtrlSpace b<CR>"),
+        button("<Leader>=", icons.common.explorer .. " File explorer", ":LvimFileBrowser<CR>"),
+        button("<Leader>f", icons.common.file .. " Search file", ":FzfLua files<CR>"),
+        button("<Leader>s", icons.common.search_in_files .. " Search in files", ":FzfLua live_grep<CR>"),
+        button("F11", icons.common.help .. "Help", ":LvimHelper<CR>"),
+        button("q", icons.common.quit .. "Quit", "<Cmd>qa<CR>"),
+    }
+    alpha_themes_dashboard.section.footer.val = footer()
+    alpha_themes_dashboard.section.footer.opts.hl = "AlphaFooter"
+    table.insert(alpha_themes_dashboard.config.layout, { type = "padding", val = 1 })
+    table.insert(alpha_themes_dashboard.config.layout, {
+        type = "text",
+        val = require("alpha.fortune")(),
+        opts = {
+            position = "center",
+            hl = "AlphaQuote",
+        },
+    })
+    alpha.setup(alpha_themes_dashboard.config)
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "LazyVimStarted",
+        callback = function()
+            alpha_themes_dashboard.section.footer.val = footer()
+            pcall(vim.cmd.AlphaRedraw)
+        end,
+    })
+end
+
+config.nvim_window_picker = function()
+    local window_picker_status_ok, window_picker = pcall(require, "window-picker")
+    if not window_picker_status_ok then
+        return
+    end
+    local function focus_window()
+        local picked_window_id = window_picker.pick_window() or vim.api.nvim_get_current_win()
+        vim.api.nvim_set_current_win(picked_window_id)
+    end
+    window_picker.setup({
+        hint = "statusline-winbar",
+        show_prompt = false,
+        filter_rules = {
+            autoselect_one = false,
+            include_current_win = true,
+            bo = {
+                filetype = {},
+                buftype = {},
+            },
+        },
+        highlights = {
+            statusline = {
+                focused = {
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bold = true,
+                },
+                unfocused = {
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bold = true,
+                },
+            },
+            winbar = {
+                focused = {
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bold = true,
+                },
+                unfocused = {
+                    fg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].bg,
+                    bg = _G.LVIM_COLORS["colors"][_G.LVIM_SETTINGS.theme].red_03,
+                    bold = true,
+                },
+            },
+        },
+    })
+    vim.api.nvim_create_user_command("WindowPicker", focus_window, {})
+    vim.keymap.set("n", "gw", function()
+        vim.cmd("WindowPicker")
+    end, { noremap = true, silent = true, desc = "WindowPicker" })
+end
+
+config.winshift_nvim = function()
+    local winshift_nvim_status_ok, winshift_nvim = pcall(require, "winshift")
+    if not winshift_nvim_status_ok then
+        return
+    end
+    winshift_nvim.setup({
+        highlight_moving_win = true,
+        focused_hl_group = "CursorLine",
+    })
+end
+
+config.mini_files = function()
+    local mini_files_status_ok, mini_files = pcall(require, "mini.files")
+    if not mini_files_status_ok then
+        return
+    end
+    mini_files.setup({
+        mappings = {
+            close = "q",
+            go_in = "L",
+            go_in_plus = "l",
+            go_out = "H",
+            go_out_plus = "h",
+            reset = "<BS>",
+            show_help = "g?",
+            synchronize = "=",
+            trim_left = ".",
+            trim_right = ">",
+        },
+        windows = {
+            max_number = math.huge,
+            preview = true,
+            width_focus = 30,
+            width_nofocus = 30,
+            width_preview = 80,
+        },
+        options = {
+            permanent_delete = true,
+            use_as_default_explorer = true,
+        },
+    })
+    local map_split = function(buf_id, lhs, direction)
+        local rhs = function()
+            local new_target_window
+            vim.api.nvim_win_call(mini_files.get_target_window(), function()
+                vim.cmd(direction .. " split")
+                new_target_window = vim.api.nvim_get_current_win()
+            end)
+            mini_files.set_target_window(new_target_window)
+        end
+        local desc = "Split " .. direction
+        vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+    end
+    vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesBufferCreate",
+        callback = function(args)
+            local buf_id = args.data.buf_id
+            map_split(buf_id, "gs", "belowright horizontal")
+            map_split(buf_id, "gv", "belowright vertical")
+        end,
+    })
+    local function mini_files_open()
+        require("mini.files").open()
+    end
+    vim.api.nvim_create_user_command("MiniFiles", mini_files_open, {})
+end
+
+config.mini_clue = function()
+    local mini_clue_status_ok, mini_clue = pcall(require, "mini.clue")
+    if not mini_clue_status_ok then
+        return
+    end
+    function clue_setup()
+        mini_clue.setup({
+            window = {
+                config = {
+                    width = "auto",
+                },
+                delay = tonumber(_G.LVIM_SETTINGS.keyshelperdelay),
+                scroll_down = "<C-d>",
+                scroll_up = "<C-u>",
+            },
+            triggers = {
+                { mode = "n", keys = "<Leader>" },
+                { mode = "x", keys = "<Leader>" },
+                { mode = "i", keys = "<C-x>" },
+                { mode = "n", keys = "g" },
+                { mode = "x", keys = "g" },
+                { mode = "n", keys = "'" },
+                { mode = "n", keys = "`" },
+                { mode = "x", keys = "'" },
+                { mode = "x", keys = "`" },
+                { mode = "n", keys = '"' },
+                { mode = "x", keys = '"' },
+                { mode = "i", keys = "<C-r>" },
+                { mode = "c", keys = "<C-r>" },
+                { mode = "n", keys = "<C-w>" },
+                { mode = "n", keys = "z" },
+                { mode = "x", keys = "z" },
+                { mode = "n", keys = ";" },
+                { mode = "n", keys = ";p" },
+                { mode = "n", keys = "<C-c>" },
+                { mode = "n", keys = "<C-c><C-c>" },
+                { mode = "n", keys = "d" },
+                { mode = "n", keys = "]" },
+                { mode = "n", keys = "[" },
+                { mode = "n", keys = "y" },
+                { mode = "x", keys = "y" },
+                { mode = "n", keys = "c" },
+                { mode = "x", keys = "c" },
+            },
+            clues = {
+                mini_clue.gen_clues.builtin_completion(),
+                mini_clue.gen_clues.g(),
+                mini_clue.gen_clues.marks(),
+                mini_clue.gen_clues.registers(),
+                mini_clue.gen_clues.windows(),
+                mini_clue.gen_clues.z(),
+            },
+        })
+    end
+    clue_setup()
+    function clue_enable_disable(status)
+        if status == true then
+            funcs.tm_autocmd("start")
+            vim.defer_fn(function()
+                mini_clue.enable_all_triggers()
+                vim.g.miniclue_disable = false
+                clue_setup()
+            end, 10)
+        else
+            funcs.tm_autocmd("stop")
+            vim.defer_fn(function()
+                mini_clue.disable_all_triggers()
+                vim.g.miniclue_disable = true
+            end, 10)
+        end
+    end
+    if _G.LVIM_SETTINGS.keyshelper == true then
+        clue_enable_disable(true)
+    else
+        clue_enable_disable(false)
+    end
+    local global = require("core.global")
+    local ui_config = require("lvim-ui-config.config")
+    local select = require("lvim-ui-config.select")
+    local notify = require("lvim-ui-config.notify")
+    local function lvim_keys_helper()
+        local status
+        if _G.LVIM_SETTINGS.keyshelper == true then
+            status = "Enabled"
+        else
+            status = "Disabled"
+        end
+        local opts = ui_config.select({
+            "Enable",
+            "Disable",
+            "Cancel",
+        }, { prompt = "Keys helper (" .. status .. ")" }, {})
+        select(opts, function(choice)
+            if choice == "Enable" then
+                _G.LVIM_SETTINGS["keyshelper"] = true
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                clue_enable_disable(true)
+                notify.info("Keys helper enabled", { title = "LVIM IDE" })
+            elseif choice == "Disable" then
+                _G.LVIM_SETTINGS["keyshelper"] = false
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                clue_enable_disable(false)
+                notify.info("Keys helper disabled", { title = "LVIM IDE" })
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimKeysHelper", lvim_keys_helper, {})
+    local function lvim_keys_helper_delay()
+        local status = _G.LVIM_SETTINGS.keyshelperdelay
+        local opts = ui_config.select({
+            0,
+            50,
+            100,
+            200,
+            300,
+            400,
+            500,
+            600,
+            700,
+            800,
+            900,
+            1000,
+            "Cancel",
+        }, { prompt = "KeysHelperDelay (" .. status .. " ms)" }, {})
+        select(opts, function(choice)
+            if choice == "Cancel" then
+            else
+                _G.LVIM_SETTINGS["keyshelperdelay"] = tonumber(choice)
+                funcs.write_file(global.lvim_path .. "/.configs/lvim/config.json", _G.LVIM_SETTINGS)
+                clue_setup()
+                notify.info("Keys helper delay: " .. choice .. "ms", { title = "LVIM IDE" })
+            end
+        end)
+    end
+    vim.api.nvim_create_user_command("LvimKeysHelperDelay", lvim_keys_helper_delay, {})
+end
+
+config.netrw_nvim = function()
+    local netrw_nvim_status_ok, netrw_nvim = pcall(require, "netrw")
+    if not netrw_nvim_status_ok then
+        return
+    end
+    netrw_nvim.setup({
+        use_devicons = true,
+    })
+    vim.api.nvim_create_autocmd("FileType", {
+        pattern = {
+            "netrw",
+        },
+        callback = function()
+            vim.opt_local.signcolumn = "yes:1"
+        end,
+        group = "LvimIDE",
+    })
+end
+
+config.neo_tree_nvim = function()
+    local neo_tree_status_ok, neo_tree = pcall(require, "neo-tree")
+    if not neo_tree_status_ok then
+        return
+    end
+    neo_tree.setup({
+        use_popups_for_input = false,
+        popup_border_style = { " ", " ", " ", " ", " ", " ", " ", " " },
+        enable_git_status = false,
+        enable_diagnostics = false,
+        sources = {
+            "filesystem",
+            "buffers",
+            "git_status",
+        },
+        source_selector = {
+            winbar = true,
+            separator = "",
+            content_layout = "center",
+            sources = {
+                {
+                    source = "filesystem",
+                    display_name = icons.common.folder .. " DIR  ",
+                },
+                {
+                    source = "buffers",
+                    display_name = icons.common.buffer .. " BUF  ",
+                },
+                {
+                    source = "git_status",
+                    display_name = icons.common.git .. " GIT  ",
+                },
+            },
+        },
+        default_component_configs = {
+            container = {
+                enable_character_fade = true,
+            },
+            indent = {
+                with_markers = false,
+                with_expanders = true,
+            },
+            icon = {
+                folder_closed = icons.common.folder_close,
+                folder_open = icons.common.folder_open,
+                folder_empty = icons.common.folder_empty,
+                highlight = "NeoTreeFileIcon",
+            },
+            modified = {
+                symbol = icons.common.dot,
+            },
+            git_status = {
+                symbols = icons.git_status,
+                align = "right",
+            },
+        },
+        window = {
+            position = "left",
+            width = 40,
+            mappings = {
+                ["Z"] = "expand_all_nodes",
+                ["<Leader>"] = false,
+            },
+        },
+        filesystem = {
+            follow_current_file = {
+                enabled = true,
+                leave_dirs_open = true,
+            },
+            use_libuv_file_watcher = true,
+        },
+        diagnostics = {
+            autopreview = false,
+            autopreview_config = {},
+            autopreview_event = "neo_tree_buffer_enter",
+            bind_to_cwd = true,
+            diag_sort_function = "severity",
+            follow_behavior = {
+                always_focus_file = true,
+                expand_followed = true,
+                collapse_others = true,
+            },
+            follow_current_file = false,
+            group_dirs_and_files = true,
+            group_empty_dirs = true,
+            show_unloaded = true,
+        },
+    })
+end
+
+config.dirbuf_nvim = function()
+    local dirbuf_status_ok, dirbuf = pcall(require, "dirbuf")
+    if not dirbuf_status_ok then
+        return
+    end
+    dirbuf.setup({})
+end
+
+config.hydra_nvim = function()
+    local global = require("core.global")
+    local all_hydras = global.modules_path .. "/base/configs/ui/hydra/"
+    local path_list = vim.split(vim.fn.glob(all_hydras .. "*.lua", true), "\n")
+    for _, path in ipairs(path_list) do
+        local name = vim.fn.fnamemodify(path, ":t:r")
+        local f = "modules.base.configs.ui.hydra." .. name
+        require(f)
+    end
+end
+
+config.heirline_nvim = function()
+    local statusline = require("modules.base.configs.ui.heirline.statusline").get_statusline()
+    local statuscolumn = require("modules.base.configs.ui.heirline.statuscolumn").get_statuscolumn()
+    local winbar = require("modules.base.configs.ui.heirline.winbar").get_winbar()
+    local buf_types = require("modules.base.configs.ui.heirline.buf_types")
+    local file_types = require("modules.base.configs.ui.heirline.file_types")
+    local heirline_status_ok, heirline = pcall(require, "heirline")
+    if not heirline_status_ok then
+        return
+    end
+    local file_types_winbar = {}
+    for i, v in ipairs(file_types) do
+        file_types_winbar[i] = v
+    end
+    table.insert(file_types_winbar, "qf")
+    table.insert(file_types_winbar, "replacer")
+    heirline.setup({
+        statusline = statusline,
+        statuscolumn = statuscolumn,
+        winbar = winbar,
+        opts = {
+            disable_winbar_cb = function(args)
+                local buf = args.buf
+                local buftype = vim.tbl_contains(buf_types, vim.bo[buf].buftype)
+                local filetype = vim.tbl_contains(file_types_winbar, vim.bo[buf].filetype)
+                return buftype or filetype
+            end,
+        },
+    })
+end
+
+config.lvim_shell = function()
+    local file_managers = { "Ranger", "Vifm" }
+    local executable = vim.fn.executable
+    for _, fm in ipairs(file_managers) do
+        if executable(vim.fn.tolower(fm)) == 1 then
+            vim.cmd(
+                "command! -nargs=? -complete=dir "
+                    .. fm
+                    .. " :lua require('modules.base.configs.ui.shell')."
+                    .. fm
+                    .. "(<f-args>)"
+            )
+        end
+    end
+    vim.cmd("command! Lazygit :lua require('modules.base.configs.ui.shell').Lazygit()(<f-args>)")
+    vim.cmd("command! Lazydocker :lua require('modules.base.configs.ui.shell').Lazydocker()")
+    local shells = require("modules.base.configs.ui.shell")
+    vim.keymap.set("n", "<A-g>", function()
+        shells.Lazygit()
+    end, { noremap = true, silent = true, desc = "Lazygit" })
+    vim.keymap.set("n", "<A-d>", function()
+        shells.Lazydocker()
+    end, { noremap = true, silent = true, desc = "Lazydocker" })
+    vim.keymap.set("n", "<A-r>", function()
+        shells.Ranger()
+    end, { noremap = true, silent = true, desc = "Ranger" })
+    vim.keymap.set("n", "<A-f>", function()
+        shells.Vifm()
+    end, { noremap = true, silent = true, desc = "Ranger" })
+end
+
+config.toggleterm_nvim = function()
+    local toggleterm_status_ok, toggleterm = pcall(require, "toggleterm")
+    if not toggleterm_status_ok then
+        return
+    end
+    local toggleterm_terminal_status_ok, toggleterm_terminal = pcall(require, "toggleterm.terminal")
+    if not toggleterm_terminal_status_ok then
+        return
+    end
+    toggleterm.setup({
+        size = function(term)
+            if term.direction == "horizontal" then
+                return 20
+            elseif term.direction == "vertical" then
+                return vim.o.columns * 0.4
+            end
+        end,
+        start_in_insert = false,
+        on_open = function()
+            vim.keymap.set("n", "<C-q>", "<cmd>close<CR>", { buffer = true, noremap = true, silent = true })
+            vim.keymap.set(
+                "t",
+                "<C-q>",
+                "<C-\\><C-n><cmd>close<CR><C-w><C-p>",
+                { buffer = true, noremap = true, silent = true }
+            )
+            vim.keymap.set("t", "<C-x>", "<C-\\><C-n>", { buffer = true, noremap = true, silent = true })
+            vim.wo.cursorcolumn = false
+            vim.wo.cursorline = false
+            vim.cmd("wincmd=")
+        end,
+        highlights = {
+            Normal = {
+                link = "NormalFloat",
+            },
+            NormalFloat = {
+                link = "NormalFloat",
+            },
+            FloatBorder = {
+                link = "FloatBorder",
+            },
+        },
+        float_opts = {
+            border = { " ", " ", " ", " ", " ", " ", " ", " " },
+            winblend = 0,
+            width = vim.o.columns - 20,
+            height = vim.o.lines - 9,
+            highlights = {
+                border = "FloatBorder",
+                background = "NormalFloat",
+            },
+        },
+    })
+    local terminal_1 = toggleterm_terminal.Terminal:new({
+        count = 1,
+        direction = "horizontal",
+    })
+    local terminal_2 = toggleterm_terminal.Terminal:new({
+        count = 2,
+        direction = "horizontal",
+    })
+    local terminal_3 = toggleterm_terminal.Terminal:new({
+        count = 3,
+        direction = "horizontal",
+    })
+    local terminal_4 = toggleterm_terminal.Terminal:new({
+        count = 4,
+        direction = "horizontal",
+    })
+    local terminal_5 = toggleterm_terminal.Terminal:new({
+        count = 5,
+        direction = "vertical",
+    })
+    local terminal_6 = toggleterm_terminal.Terminal:new({
+        count = 6,
+        direction = "vertical",
+    })
+    local terminal_7 = toggleterm_terminal.Terminal:new({
+        count = 7,
+        direction = "vertical",
+    })
+    local terminal_8 = toggleterm_terminal.Terminal:new({
+        count = 8,
+        direction = "vertical",
+    })
+    local terminal_9 = toggleterm_terminal.Terminal:new({
+        count = 9,
+        direction = "float",
+    })
+    vim.api.nvim_create_user_command("TerminalHorizontal1", function()
+        terminal_1:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalHorizontal2", function()
+        terminal_2:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalHorizontal3", function()
+        terminal_3:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalHorizontal4", function()
+        terminal_4:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalVertical1", function()
+        terminal_5:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalVertical2", function()
+        terminal_6:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalVertical3", function()
+        terminal_7:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalVertical4", function()
+        terminal_8:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalVertical4", function()
+        terminal_8:toggle()
+    end, {})
+    vim.api.nvim_create_user_command("TerminalFloat", function()
+        terminal_9:toggle()
+    end, {})
+    vim.keymap.set("n", "<F1>", function()
+        terminal_1:toggle()
+    end, { noremap = true, silent = true, desc = "Terminal One" })
+    vim.keymap.set("n", "<F2>", function()
+        terminal_2:toggle()
+    end, { noremap = true, silent = true, desc = "Terminal Two" })
+    vim.keymap.set("n", "<F3>", function()
+        terminal_3:toggle()
+    end, { noremap = true, silent = true, desc = "Terminal Three" })
+    vim.keymap.set("n", "<F4>", function()
+        terminal_9:toggle()
+    end, { noremap = true, silent = true, desc = "Terminal Float" })
+end
+
+config.zen_mode_nvim = function()
+    local zen_mode_status_ok, zen_mode = pcall(require, "zen-mode")
+    if not zen_mode_status_ok then
+        return
+    end
+    zen_mode.setup({
+        window = {
+            options = {
+                number = false,
+                relativenumber = false,
+            },
+        },
+        plugins = {
+            gitsigns = {
+                enabled = true,
+            },
+        },
+    })
+end
+
+config.neozoom_lua = function()
+    local neo_zoom_status_ok, neo_zoom = pcall(require, "neo-zoom")
+    if not neo_zoom_status_ok then
+        return
+    end
+    neo_zoom.setup({
+        left_ratio = 0,
+        top_ratio = 0,
+        width_ratio = 0.6,
+        height_ratio = 1,
+        border = "none",
+        scrolloff_on_zoom = 0,
+    })
+end
+
+config.stay_in_place = function()
+    local stay_in_place_status_ok, stay_in_place = pcall(require, "stay-in-place")
+    if not stay_in_place_status_ok then
+        return
+    end
+    stay_in_place.setup({})
+end
+
+config.rainbow_delimiters_nvim = function()
+    local rainbow_delimiters_status_ok, rainbow_delimiters = pcall(require, "rainbow-delimiters")
+    if not rainbow_delimiters_status_ok then
+        return
+    end
+    vim.g.rainbow_delimiters = {
+        strategy = {
+            [""] = rainbow_delimiters.strategy["global"],
+            vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+            [""] = "rainbow-delimiters",
+            lua = "rainbow-blocks",
+        },
+        highlight = {
+            "RainbowDelimiterRed",
+            "RainbowDelimiterYellow",
+            "RainbowDelimiterBlue",
+            "RainbowDelimiterOrange",
+            "RainbowDelimiterGreen",
+            "RainbowDelimiterViolet",
+            "RainbowDelimiterCyan",
+        },
+    }
+end
+
+config.indent_blankline_nvim = function()
+    local indent_blankline_status_ok, indent_blankline = pcall(require, "ibl")
+    if not indent_blankline_status_ok then
+        return
+    end
+    indent_blankline.setup({
+        debounce = 200,
+        indent = {
+            char = "▏",
+            tab_char = "▏",
+            smart_indent_cap = true,
+            highlight = "IndentBlanklineChar",
+        },
+        whitespace = {
+            highlight = "IndentBlanklineContextChar",
+        },
+        scope = {
+            char = "▏",
+            enabled = true,
+            show_start = true,
+            show_end = true,
+            injected_languages = true,
+            include = {
+                node_type = { ["*"] = { "*" } },
+            },
+            exclude = {
+                node_type = {},
+            },
+            highlight = { "IndentBlanklineCurrentChar" },
+        },
+        exclude = {
+            filetypes = {
+                "startify",
+                "dashboard",
+                "dotooagenda",
+                "log",
+                "fugitive",
+                "gitcommit",
+                "packer",
+                "vimwiki",
+                "markdown",
+                "json",
+                "txt",
+                "vista",
+                "help",
+                "todoist",
+                "NvimTree",
+                "peekaboo",
+                "git",
+                "TelescopePrompt",
+                "undotree",
+                "org",
+                "flutterToolsOutline",
+                "qf",
+            },
+            buftypes = {
+                "terminal",
+                "nofile",
+            },
+        },
+    })
+end
+
+config.lvim_helper = function()
+    local lvim_helper_status_ok, lvim_helper = pcall(require, "lvim-helper")
+    if not lvim_helper_status_ok then
+        return
+    end
+    local global = require("core.global")
+    lvim_helper.setup({
+        content = {
+            {
+                type = "separator",
+                title = " LVIM IDE KEYS ",
+            },
+            {
+                type = "link",
+                title = "  Normal Mode  ",
+                file = global.home .. "/.config/nvim/help/lvim_bindings_normal_mode.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Visual Mode  ",
+                file = global.home .. "/.config/nvim/help/lvim_bindings_visual_mode.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  DAP  ",
+                file = global.home .. "/.config/nvim/help/lvim_bindings_debug_dap.md",
+                file_type = "markdown",
+            },
+            {
+                type = "separator",
+                title = " VIM KEYS AND COMMANDS ",
+            },
+            {
+                type = "link",
+                title = "  Global  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_global.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Cursor Movement  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_cursor_movement.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Visual Mode  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_visual_mode.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Visual Commands  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_visual_commands.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Insert Mode  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_insert_mode.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Editing  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_editing.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Registers  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_registers.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Marks and Positions  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_marks_and_positions.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Macros  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_macros.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Cut and Paste  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_cut_and_paste.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Indent Text  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_indent_text.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Exiting  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_exiting.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Search and Replace  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_search_and_replace.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Search in Multiple Files  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_search_in_multiple_files.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Tabs  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_tabs.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Working with Multiple Files  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_working_with_multiple_files.md",
+                file_type = "markdown",
+            },
+            {
+                type = "link",
+                title = "  Diff  ",
+                file = global.home .. "/.config/nvim/help/vim_cheat_sheet_diff.md",
+                file_type = "markdown",
+            },
+        },
+    })
+    vim.keymap.set("n", "<F11>", function()
+        vim.cmd("LvimHelper")
+    end, { noremap = true, silent = true, desc = "LvimHelper" })
+    vim.keymap.set("n", "<C-c>h", function()
+        vim.cmd("LvimHelper")
+    end, { noremap = true, silent = true, desc = "LvimHelper" })
+end
+
+return config
