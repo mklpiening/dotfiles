@@ -15,7 +15,6 @@ local applicationHotkeys = {
 	e = "Visual Studio Code",
 	a = "Arc",
 	r = "Foxglove Studio",
-	-- f = "Finder",
 	g = "Gather",
 	s = "Spotify",
 
@@ -32,50 +31,19 @@ for key, app in pairs(applicationHotkeys) do
 	end)
 end
 
--- local function find_or_start_app(app)
--- 	-- search for app
--- 	local result = { hs.application.find(app) }
--- 	if result[1] ~= nil then
--- 		return result[1]
--- 	end
--- 	-- app does not exist
-
--- 	-- start app
--- 	hs.application.open(app)
--- 	result = { hs.application.find(app) }
--- 	return result[1]
--- end
-
--- for key, title in pairs(iTermHotkeys) do
--- 	-- find or launch iTerm window
--- 	hs.hotkey.bind(hyper, key, function()
--- 		local iterm = find_or_start_app("iTerm")
--- 		local clicked_menu_item = iterm:selectMenuItem({ "Window" })
--- 		print(clicked_menu_item)
--- 		local windows = { iterm:findWindow(title) }
--- 		for k, v in pairs(windows) do
--- 			if v == nil then
--- 				print("nil")
--- 			else
--- 				print(k, v:title())
--- 			end
--- 		end
--- 	end)
--- end
-
 -----------------------
 -- window management --
 -----------------------
 
 local GRID_SIZE = 3
 local GAPS = 0
-local PRIMARY_WINDOW_RATIOS = {0.6666, 0.5}
+local PRIMARY_WINDOW_RATIOS = { 0.6666, 0.5 }
 
 local per_space_ratios = {}
 
 -- configure grid
-hs.grid.setGrid(GRID_SIZE .. 'x' .. GRID_SIZE)
-hs.grid.setMargins({GAPS, GAPS})
+hs.grid.setGrid(GRID_SIZE .. "x" .. GRID_SIZE)
+hs.grid.setMargins({ GAPS, GAPS })
 hs.window.animationDuration = 0.5
 
 -- tile on key-press
@@ -88,7 +56,7 @@ hs.hotkey.bind(hyper, "return", function()
 
 	-- filter other windows
 	local o_windows = {}
-	for i=1,#o_windows_raw do
+	for i = 1, #o_windows_raw do
 		if o_windows_raw[i] ~= hs.window.desktop() then
 			if not o_windows_raw[i]:isMinimized() then
 				o_windows[#o_windows + 1] = o_windows_raw[i]
@@ -128,17 +96,19 @@ hs.hotkey.bind(hyper, "return", function()
 	else
 		-- handle the ratio we want to use
 		if per_space_ratios[f_space] == nil then
-			per_space_ratios[f_space] = {ratio_id=1, primary_window=-1, num_minor_windows=-1}
+			per_space_ratios[f_space] = { ratio_id = 1, primary_window = -1, num_minor_windows = -1 }
 		end
-		if per_space_ratios[f_space].primary_window ~= f_window:id()
-			or per_space_ratios[f_space].num_minor_windows ~= #o_windows then
+		if
+			per_space_ratios[f_space].primary_window ~= f_window:id()
+			or per_space_ratios[f_space].num_minor_windows ~= #o_windows
+		then
 			-- keep ratio, but change entry for last used primary window to currently focused window
 			per_space_ratios[f_space].primary_window = f_window:id()
 			per_space_ratios[f_space].num_minor_windows = #o_windows
 		else
 			-- switch to next ratio if we focus the same window as last time
 			per_space_ratios[f_space].ratio_id = per_space_ratios[f_space].ratio_id + 1
-			
+
 			if per_space_ratios[f_space].ratio_id > #PRIMARY_WINDOW_RATIOS then
 				per_space_ratios[f_space].ratio_id = 1
 			end
@@ -148,27 +118,29 @@ hs.hotkey.bind(hyper, "return", function()
 		local primary_window_size = GRID_SIZE * PRIMARY_WINDOW_RATIOS[per_space_ratios[f_space].ratio_id]
 
 		-- configure tile sizes
-		local o_window_rect = {x=0, y=0, w=1, h=1}
-		local d_o_window_pos = {x=0, y=0}
-		local f_window_rect = {x=0, y=0, w=1, h=1}
+		local o_window_rect = { x = 0, y = 0, w = 1, h = 1 }
+		local d_o_window_pos = { x = 0, y = 0 }
+		local f_window_rect = { x = 0, y = 0, w = 1, h = 1 }
 		if ver_split then
 			if inv_split then
-				o_window_rect = {x=0, y=0, w=GRID_SIZE/(#o_windows), h=GRID_SIZE-primary_window_size}
-				f_window_rect = {x=0, y=GRID_SIZE-primary_window_size, w=GRID_SIZE, h=primary_window_size}
+				o_window_rect = { x = 0, y = 0, w = GRID_SIZE / #o_windows, h = GRID_SIZE - primary_window_size }
+				f_window_rect = { x = 0, y = GRID_SIZE - primary_window_size, w = GRID_SIZE, h = primary_window_size }
 			else
-				o_window_rect = {x=0, y=primary_window_size, w=GRID_SIZE/(#o_windows), h=GRID_SIZE-primary_window_size}
-				f_window_rect = {x=0, y=0, w=GRID_SIZE, h=primary_window_size}
+				o_window_rect = { x = 0, y = primary_window_size, w = GRID_SIZE / #o_windows, h = GRID_SIZE
+					- primary_window_size }
+				f_window_rect = { x = 0, y = 0, w = GRID_SIZE, h = primary_window_size }
 			end
-			d_o_window_pos = {x=GRID_SIZE/(#o_windows), y=0}
+			d_o_window_pos = { x = GRID_SIZE / #o_windows, y = 0 }
 		else
 			if inv_split then
-				o_window_rect = {x=0, y=0, w=GRID_SIZE-primary_window_size, h=GRID_SIZE/(#o_windows)}
-				f_window_rect = {x=GRID_SIZE-primary_window_size, y=0, w=primary_window_size, h=GRID_SIZE}
+				o_window_rect = { x = 0, y = 0, w = GRID_SIZE - primary_window_size, h = GRID_SIZE / #o_windows }
+				f_window_rect = { x = GRID_SIZE - primary_window_size, y = 0, w = primary_window_size, h = GRID_SIZE }
 			else
-				o_window_rect = {x=primary_window_size, y=0, w=GRID_SIZE-primary_window_size, h=GRID_SIZE/(#o_windows)}
-				f_window_rect = {x=0, y=0, w=primary_window_size, h=GRID_SIZE}
+				o_window_rect = { x = primary_window_size, y = 0, w = GRID_SIZE - primary_window_size, h = GRID_SIZE
+					/ #o_windows }
+				f_window_rect = { x = 0, y = 0, w = primary_window_size, h = GRID_SIZE }
 			end
-			 d_o_window_pos = {x=0, y=GRID_SIZE/(#o_windows)}
+			d_o_window_pos = { x = 0, y = GRID_SIZE / #o_windows }
 		end
 
 		-- print(o_window_rect.x, o_window_rect.y, o_window_rect.w, o_window_rect.h)
@@ -179,7 +151,7 @@ hs.hotkey.bind(hyper, "return", function()
 		hs.grid.set(f_window, f_window_rect, f_screen)
 
 		-- stack other windows
-		for i=1,#o_windows do
+		for i = 1, #o_windows do
 			hs.grid.set(o_windows[i], o_window_rect, f_screen)
 
 			-- move window rect to next position
@@ -205,8 +177,8 @@ hs.hotkey.bind(hyper, "i", function()
 	local o_windows_raw = f_window:otherWindowsSameScreen()
 
 	-- filter other windows
-	local windows = {f_window}
-	for i=1,#o_windows_raw do
+	local windows = { f_window }
+	for i = 1, #o_windows_raw do
 		if o_windows_raw[i] ~= hs.window.desktop() then
 			if not o_windows_raw[i]:isMinimized() then
 				windows[#windows + 1] = o_windows_raw[i]
@@ -215,7 +187,7 @@ hs.hotkey.bind(hyper, "i", function()
 	end
 
 	-- snap windows
-	for i=1,#windows do
+	for i = 1, #windows do
 		hs.grid.snap(windows[i])
 	end
 end)
