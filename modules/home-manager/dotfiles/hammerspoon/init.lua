@@ -63,9 +63,11 @@ end
 -- 	end)
 -- end
 
--- window management
+-----------------------
+-- window management --
+-----------------------
 
-local GRID_SIZE = 4
+local GRID_SIZE = 3
 local GAPS = 0
 local PRIMARY_WINDOW_RATIOS = {0.6666, 0.5}
 
@@ -187,8 +189,38 @@ hs.hotkey.bind(hyper, "return", function()
 	end
 end)
 
--- remap hjkl to arrow keys
+-- snap all windows on current screen to grid
+hs.hotkey.bind(hyper, "i", function()
+	local f_application = hs.application.frontmostApplication()
+	local f_window = f_application:focusedWindow()
+	local o_windows_raw = f_window:otherWindowsSameScreen()
 
+	-- filter other windows
+	local windows = {f_window}
+	for i=1,#o_windows_raw do
+		if o_windows_raw[i] ~= hs.window.desktop() then
+			if not o_windows_raw[i]:isMinimized() then
+				windows[#windows + 1] = o_windows_raw[i]
+			end
+		end
+	end
+
+	-- snap windows
+	for i=1,#windows do
+		hs.grid.snap(windows[i])
+	end
+end)
+
+-- scan focussed window to grid
+hs.hotkey.bind(hyper, "o", function()
+	local f_application = hs.application.frontmostApplication()
+	local f_window = f_application:focusedWindow()
+
+	-- snap window
+	hs.grid.snap(f_window)
+end)
+
+-- remap hjkl to arrow keys
 local function pressFn(mods, key)
 	if key == nil then
 		key = mods
