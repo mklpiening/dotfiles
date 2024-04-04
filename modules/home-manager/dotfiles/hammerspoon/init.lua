@@ -63,21 +63,25 @@ end
 -- 	end)
 -- end
 
--- To easily layout windows on the screen, we use hs.grid to create
--- a 4x4 grid. If you want to use a more detailed grid, simply 
--- change its dimension here
-local GRID_SIZE = 100
-local HALF_GRID_SIZE = GRID_SIZE / 2
--- Set the grid size and add a few pixels of margin
--- Also, don't animate window changes... That's too slow
-hs.grid.setGrid(GRID_SIZE .. 'x' .. GRID_SIZE)
-hs.grid.setMargins({0, 0})
-hs.window.animationDuration = 0
+-- window management
 
+local GRID_SIZE = 4
+local GAPS = 0
+local PRIMARY_WINDOW_RATIOS = {0.6666, 0.5}
+
+local per_space_ratios = {}
+
+-- configure grid
+hs.grid.setGrid(GRID_SIZE .. 'x' .. GRID_SIZE)
+hs.grid.setMargins({GAPS, GAPS})
+hs.window.animationDuration = 0.5
+
+-- tile on key-press
 hs.hotkey.bind(hyper, "return", function()
 	local f_application = hs.application.frontmostApplication()
 	local f_window = f_application:focusedWindow()
 	local f_screen = f_window:screen()
+	local f_space = hs.spaces.activeSpaceOnScreen(f_screen)
 	local o_windows_raw = f_window:otherWindowsSameScreen()
 
 	-- filter other windows
@@ -89,7 +93,6 @@ hs.hotkey.bind(hyper, "return", function()
 			end
 		end
 	end
-	print ("num_windows", #o_windows)
 
 	-- determine split behavior
 	local ver_split = false -- split vertiaclly - so up/down rather than left/right
@@ -117,15 +120,32 @@ hs.hotkey.bind(hyper, "return", function()
 		inv_split = true
 	end
 
-	print (ver_split)
-	print (inv_split)
-
 	if #o_windows == 0 then
 		-- maximize if this is the only window
 		hs.grid.maximizeWindow(f_window)
 	else
-		local primary_window_size = 65
+		-- handle the ratio we want to use
+		if per_space_ratios[f_space] == nil then
+			per_space_ratios[f_space] = {ratio_id=1, primary_window=-1, num_minor_windows=-1}
+		end
+		if per_space_ratios[f_space].primary_window ~= f_window:id()
+			or per_space_ratios[f_space].num_minor_windows ~= #o_windows then
+			-- keep ratio, but change entry for last used primary window to currently focused window
+			per_space_ratios[f_space].primary_window = f_window:id()
+			per_space_ratios[f_space].num_minor_windows = #o_windows
+		else
+			-- switch to next ratio if we focus the same window as last time
+			per_space_ratios[f_space].ratio_id = per_space_ratios[f_space].ratio_id + 1
+			
+			if per_space_ratios[f_space].ratio_id > #PRIMARY_WINDOW_RATIOS then
+				per_space_ratios[f_space].ratio_id = 1
+			end
+		end
 
+		-- select size of primary window - Tile sizes wont stick to grid cell sizes
+		local primary_window_size = GRID_SIZE * PRIMARY_WINDOW_RATIOS[per_space_ratios[f_space].ratio_id]
+
+		-- configure tile sizes
 		local o_window_rect = {x=0, y=0, w=1, h=1}
 		local d_o_window_pos = {x=0, y=0}
 		local f_window_rect = {x=0, y=0, w=1, h=1}
@@ -149,17 +169,18 @@ hs.hotkey.bind(hyper, "return", function()
 			 d_o_window_pos = {x=0, y=GRID_SIZE/(#o_windows)}
 		end
 
-		print(o_window_rect.x, o_window_rect.y, o_window_rect.w, o_window_rect.h)
-		print(d_o_window_pos.x, d_o_window_pos.y)
-		print(f_window_rect.x, f_window_rect.y, f_window_rect.w, f_window_rect.h)
+		-- print(o_window_rect.x, o_window_rect.y, o_window_rect.w, o_window_rect.h)
+		-- print(d_o_window_pos.x, d_o_window_pos.y)
+		-- print(f_window_rect.x, f_window_rect.y, f_window_rect.w, f_window_rect.h)
 
 		-- move primay window
 		hs.grid.set(f_window, f_window_rect, f_screen)
 
 		-- stack other windows
-		local minor = 0
 		for i=1,#o_windows do
 			hs.grid.set(o_windows[i], o_window_rect, f_screen)
+
+			-- move window rect to next position
 			o_window_rect.x = d_o_window_pos.x + o_window_rect.x
 			o_window_rect.y = d_o_window_pos.y + o_window_rect.y
 		end
