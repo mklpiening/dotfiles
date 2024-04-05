@@ -1,3 +1,0 @@
-local keymaps = {}
-
-return keymaps

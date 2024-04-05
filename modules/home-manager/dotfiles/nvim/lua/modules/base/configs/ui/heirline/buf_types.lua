@@ -1,5 +1,0 @@
-return {
-    "nofile",
-    "prompt",
-    "help",
-}
