@@ -748,13 +748,19 @@ require('lazy').setup({
     'projekt0n/github-nvim-theme',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'github_dark_default'
+      if vim.g.vscode then
+        -- VSCode extension
+      else
+        -- ordinary Neovim
 
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
+        -- Load the colorscheme here.
+        -- Like many other themes, this one has different styles, and you could load
+        -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+        vim.cmd.colorscheme 'github_dark_default'
+
+        -- You can configure highlights by doing something like:
+        vim.cmd.hi 'Comment gui=none'
+      end
     end,
   },
 
@@ -828,14 +834,14 @@ require('lazy').setup({
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     end,
   },
-  
+
   {
     'stevearc/oil.nvim',
     opts = {},
     -- Optional dependencies
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function(_, opts)
-      require("oil").setup()
+      require('oil').setup()
     end,
   },
 
