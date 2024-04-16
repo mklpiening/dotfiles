@@ -37,7 +37,7 @@ end
 
 local GRID_SIZE = 3
 local GAPS = 0
-local PRIMARY_WINDOW_RATIOS = { 0.6666, 0.5 }
+local PRIMARY_WINDOW_RATIOS = { 0.6666, 0.5, 0.8 }
 
 local per_space_ratios = {}
 
@@ -126,8 +126,12 @@ hs.hotkey.bind(hyper, "return", function()
 				o_window_rect = { x = 0, y = 0, w = GRID_SIZE / #o_windows, h = GRID_SIZE - primary_window_size }
 				f_window_rect = { x = 0, y = GRID_SIZE - primary_window_size, w = GRID_SIZE, h = primary_window_size }
 			else
-				o_window_rect = { x = 0, y = primary_window_size, w = GRID_SIZE / #o_windows, h = GRID_SIZE
-					- primary_window_size }
+				o_window_rect = {
+					x = 0,
+					y = primary_window_size,
+					w = GRID_SIZE / #o_windows,
+					h = GRID_SIZE - primary_window_size,
+				}
 				f_window_rect = { x = 0, y = 0, w = GRID_SIZE, h = primary_window_size }
 			end
 			d_o_window_pos = { x = GRID_SIZE / #o_windows, y = 0 }
@@ -136,8 +140,12 @@ hs.hotkey.bind(hyper, "return", function()
 				o_window_rect = { x = 0, y = 0, w = GRID_SIZE - primary_window_size, h = GRID_SIZE / #o_windows }
 				f_window_rect = { x = GRID_SIZE - primary_window_size, y = 0, w = primary_window_size, h = GRID_SIZE }
 			else
-				o_window_rect = { x = primary_window_size, y = 0, w = GRID_SIZE - primary_window_size, h = GRID_SIZE
-					/ #o_windows }
+				o_window_rect = {
+					x = primary_window_size,
+					y = 0,
+					w = GRID_SIZE - primary_window_size,
+					h = GRID_SIZE / #o_windows,
+				}
 				f_window_rect = { x = 0, y = 0, w = primary_window_size, h = GRID_SIZE }
 			end
 			d_o_window_pos = { x = 0, y = GRID_SIZE / #o_windows }
@@ -199,6 +207,14 @@ hs.hotkey.bind(hyper, "o", function()
 
 	-- snap window
 	hs.grid.snap(f_window)
+end)
+
+local dark_mode_active = true
+hs.hotkey.bind(hyper, "p", function()
+	dark_mode_active = not dark_mode_active
+	hs.osascript.javascript(
+		string.format("Application('System Events').appearancePreferences.darkMode.set(%s)", dark_mode_active)
+	)
 end)
 
 -- remap hjkl to arrow keys
