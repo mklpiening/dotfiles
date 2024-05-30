@@ -4,6 +4,9 @@
   environment.shells = with pkgs; [ bash zsh ];
   environment.loginShell = pkgs.zsh;
   environment.systemPackages = [ pkgs.coreutils ];
+  environment.variables = {
+    ROS_DOMAIN_ID = "9";
+  };
 
   nix.extraOptions = ''
     experimental-features = nix-command flakes
@@ -50,6 +53,7 @@
       # "ext4fuse"              # ext4 support through FUSE (currenty not supported :/)
       "iproute2mac"             # 'ip' command on mac
       "gz-fortress"             # gazebo
+      "spicetify-cli"           # good looking spotify
     ];
     taps = [
       "osrf/simulation"

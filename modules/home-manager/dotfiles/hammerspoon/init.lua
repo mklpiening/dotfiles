@@ -15,8 +15,8 @@ local applicationHotkeys = {
 	e = "Visual Studio Code",
 	a = "Arc",
 	r = "Foxglove Studio",
-	g = "Gather",
 	s = "Spotify",
+	i = "ChatGPT",
 
 	--------------------
 	-- RIGHT HAND
@@ -169,6 +169,16 @@ hs.hotkey.bind(hyper, "return", function()
 	end
 end)
 
+-- toggle gaps
+hs.hotkey.bind(hyper, "g", function()
+	if GAPS == 0 then
+		GAPS = 24
+	else
+		GAPS = 0
+	end
+	hs.grid.setMargins({ GAPS, GAPS })
+end)
+
 -- scan focussed window to grid
 hs.hotkey.bind(hyper, "f", function()
 	local f_application = hs.application.frontmostApplication()
@@ -210,7 +220,7 @@ hs.hotkey.bind(hyper, "o", function()
 end)
 
 local dark_mode_active = true
-hs.hotkey.bind(hyper, "p", function()
+hs.hotkey.bind(hyper, "o", function()
 	dark_mode_active = not dark_mode_active
 	hs.osascript.javascript(
 		string.format("Application('System Events').appearancePreferences.darkMode.set(%s)", dark_mode_active)
