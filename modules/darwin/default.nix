@@ -20,7 +20,7 @@
 
   fonts.fontDir.enable = true;
   fonts.fonts = [
-    (pkgs.nerdfonts.override { fonts = [ "Meslo" "Iosevka" ]; })
+    pkgs.nerdfonts
   ];
   
   system.defaults.finder.AppleShowAllExtensions = true;

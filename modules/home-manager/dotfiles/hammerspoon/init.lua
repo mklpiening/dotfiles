@@ -172,7 +172,7 @@ end)
 -- toggle gaps
 hs.hotkey.bind(hyper, "g", function()
 	if GAPS == 0 then
-		GAPS = 24
+		GAPS = 10
 	else
 		GAPS = 0
 	end

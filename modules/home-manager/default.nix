@@ -94,6 +94,12 @@
     };
   };
 
+  # starship prompt
+  programs.starship = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   # zsh
   programs.zsh = {
     enable = true;
@@ -107,7 +113,6 @@
         { name = "wfxr/formarks"; }				                # mark locations and jump to them
         { name = "ChrisPenner/copy-pasta"; } 			        # copy and paste in terminal
         { name = "arzzen/calc.plugin.zsh"; } 			        # calculator
-        { name = "ael-code/zsh-colored-man-pages"; } 		  # adds colors to manpages
         { name = "fdellwing/zsh-bat"; } 			            # replace cat with bat
         { name = "unixorn/fzf-zsh-plugin"; } 			        # fzf scripts + keybindings (bindings can also be provided by fzf nix itself)
       ];
@@ -116,8 +121,9 @@
       enable = true;
       plugins = [ 
       	"git"		  # git ui
+      	"colored-man-pages"
       ];
-      theme = "bureau";
+      # theme = "bureau";
     };
     shellAliases = {
       ls = "eza";
