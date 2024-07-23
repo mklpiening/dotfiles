@@ -16,12 +16,10 @@ local applicationHotkeys = {
 	a = "Arc",
 	r = "Foxglove Studio",
 	s = "Spotify",
-	i = "ChatGPT",
 
 	--------------------
 	-- RIGHT HAND
 	n = "Obsidian",
-	k = "FreeCAD",
 }
 
 for key, app in pairs(applicationHotkeys) do
@@ -37,7 +35,7 @@ end
 
 local GRID_SIZE = 3
 local GAPS = 0
-local PRIMARY_WINDOW_RATIOS = { 0.6666, 0.5, 0.8 }
+local PRIMARY_WINDOW_RATIOS = { 0.6666, 0.5 }
 
 local per_space_ratios = {}
 

@@ -752,14 +752,40 @@ require('lazy').setup({
         -- VSCode extension
       else
         -- ordinary Neovim
+        -- Dont change the color scheme now. This will be done by vim-lumen
+        -- vim.cmd.colorscheme 'github_dark_default'
+      end
+    end,
+  },
 
-        -- Load the colorscheme here.
-        -- Like many other themes, this one has different styles, and you could load
-        -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-        vim.cmd.colorscheme 'github_dark_default'
+  { -- You can easily change to a different colorscheme.
+    -- Change the name of the colorscheme plugin below, and then
+    -- change the command in the config to whatever the name of that colorscheme is.
+    --
+    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+    'romgrk/github-light.vim',
+    priority = 1000, -- Make sure to load this before all the other start plugins.
+    init = function()
+      if vim.g.vscode then
+        -- VSCode extension
+      else
+        -- ordinary Neovim
+        -- Dont change the color scheme now. This will be done by vim-lumen
+        -- vim.cmd.colorscheme 'github_light'
+      end
+    end,
+  },
 
-        -- You can configure highlights by doing something like:
-        vim.cmd.hi 'Comment gui=none'
+  {
+    'vimpostor/vim-lumen',
+    priority = 900, -- Make sure to load thisafter the color schemes
+    init = function()
+      if vim.g.vscode then
+        -- VSCode extension
+      else
+        -- ordinary Neovim
+        vim.g.lumen_dark_colorscheme = 'github_dark_default'
+        vim.g.lumen_light_colorscheme = 'github_light'
       end
     end,
   },

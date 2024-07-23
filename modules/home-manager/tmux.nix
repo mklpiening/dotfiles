@@ -45,6 +45,17 @@ in {
 
           set -g @catppuccin_directory_text "#{b:pane_current_path}"
           set -g @catppuccin_date_time_text "%H:%M"
+
+          # navigation
+          bind-key -n 'C-h' select-pane -L
+          bind-key -n 'C-j' select-pane -D
+          bind-key -n 'C-k' select-pane -U
+          bind-key -n 'C-l' select-pane -R
+          bind-key -n 'C-\' select-pane -l
+          
+          # switch between light and dark
+          bind-key o set -g @catppuccin_flavour 'latte' \; source-file ~/.config/tmux/tmux.conf
+          bind-key O set -g @catppuccin_flavour 'mocha' \; source-file ~/.config/tmux/tmux.conf
         '';
       }
       pkgs.tmuxPlugins.sensible     # some common settings
