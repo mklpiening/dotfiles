@@ -138,7 +138,8 @@
       lld = "eza -lbhHFGmuSa --group-directories-first";
       docker_rm_dangling = "docker rmi $(docker images --filter 'dangling=true' -q --no-trunc)";
 
-      novnc = "docker run --net host --platform linux/amd64 --name novnc --hostname novnc --rm theasp/novnc";
+      start_webtop = "docker run -d --name=webtop -e PUID=1000 -e PGID=1000 -e TZ=Europe/Berlin --shm-size=\"1gb\" --rm --net host lscr.io/linuxserver/webtop";
+      stop_webtop = "docker stop webtop";
       
       cd = "z"; # replace 'cd' with 'z'
     };
