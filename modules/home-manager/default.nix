@@ -137,6 +137,8 @@
       llm = "eza -lbGF --git --sort=modified";
       lld = "eza -lbhHFGmuSa --group-directories-first";
       docker_rm_dangling = "docker rmi $(docker images --filter 'dangling=true' -q --no-trunc)";
+
+      novnc = "docker run --net host --platform linux/amd64 --name novnc --hostname novnc --rm theasp/novnc";
       
       cd = "z"; # replace 'cd' with 'z'
     };
