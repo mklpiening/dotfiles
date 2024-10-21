@@ -21,6 +21,7 @@
   fonts.fontDir.enable = true;
   fonts.fonts = [
     pkgs.nerdfonts
+    pkgs.mplus-outline-fonts.githubRelease
   ];
   
   system.defaults.finder.AppleShowAllExtensions = true;
@@ -48,15 +49,26 @@
       "freecad"                 # freecad
       "meshlab"                 # meshlab
       "cloudcompare"            # cloudcompare
+
+      "nikitabobko/tap/aerospace" # aerospace window manager
     ];
     brews = [
       # "ext4fuse"              # ext4 support through FUSE (currenty not supported :/)
       "iproute2mac"             # 'ip' command on mac
       "gz-fortress"             # gazebo
       "spicetify-cli"           # good looking spotify
+
+      "sketchybar"              # status bar replacement
+      "borders"                 # borders for aerospace https://github.com/FelixKratz/JankyBorders
+
+      # requirements for bar config    
+      "lua"
+      "switchaudio-osx"
+      "nowplaying-cli"
     ];
     taps = [
-      "osrf/simulation"
+      "osrf/simulation"           # gazebo
+      "FelixKratz/formulae"       # sketchybar
     ];
   };
   
