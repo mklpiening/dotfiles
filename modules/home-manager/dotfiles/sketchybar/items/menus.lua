@@ -4,13 +4,8 @@ local settings = require("settings")
 
 local menu_watcher = sbar.add("item", {
   drawing = false,
-  updates = false,
-})
-local space_menu_swap = sbar.add("item", {
-  drawing = false,
   updates = true,
 })
-sbar.add("event", "swap_menus_and_spaces")
 
 local max_items = 15
 local menu_items = {}
@@ -18,7 +13,7 @@ for i = 1, max_items, 1 do
   local menu = sbar.add("item", "menu." .. i, {
     padding_left = settings.paddings,
     padding_right = settings.paddings,
-    drawing = false,
+    drawing = true,
     icon = { drawing = false },
     label = {
       font = {
@@ -38,7 +33,7 @@ sbar.add("bracket", { '/menu\\..*/' }, {
 })
 
 local menu_padding = sbar.add("item", "menu.padding", {
-  drawing = false,
+  drawing = true,
   width = 5
 })
 
@@ -57,18 +52,6 @@ local function update_menus(env)
 end
 
 menu_watcher:subscribe("front_app_switched", update_menus)
-
-space_menu_swap:subscribe("swap_menus_and_spaces", function(env)
-  local drawing = menu_items[1]:query().geometry.drawing == "on"
-  if drawing then
-    menu_watcher:set( { updates = false })
-    sbar.set("/menu\\..*/", { drawing = false })
-    sbar.set("/space\\..*/", { drawing = true })
-  else
-    menu_watcher:set( { updates = true })
-    sbar.set("/space\\..*/", { drawing = false })
-    update_menus()
-  end
-end)
+update_menus()
 
 return menu_watcher

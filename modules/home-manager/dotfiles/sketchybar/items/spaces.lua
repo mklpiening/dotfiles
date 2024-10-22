@@ -6,6 +6,7 @@ local app_icons = require("helpers.app_icons")
 sbar.add("event", "aerospace_workspace_change")
 
 sbar.add("item", "space.begin_pad", { 
+  position = "right",
   width = 6,
   background = {
     padding_left = 0,
@@ -23,23 +24,24 @@ sbar.add("item", "space.begin_pad", {
 
 local spaces = {}
 
-for i = 1, 10, 1 do
+for i = 10, 1, -1 do
   local space = sbar.add("item", "space." .. i, {
+    position = "right",
     icon = { drawing = false },
     label = {
       color = colors.white,
       string = i == 10 and 0 or i,
       font = {
-        style = settings.font.style_map[i == 1 and "Heavy" or "Semibold"]
+        style = settings.font.style_map["Semibold"]
       },
-      width = 15, 
+      width = 7, 
+      color = colors.transparent,
       padding_left = 0,
       padding_right = 0
     },
-    position = "left",
     background = {
-      height = 15, 
-      color = colors.transparent,
+      height = 7, 
+      color = colors.with_alpha(colors.white, 0.1)
     },
   })
 
@@ -52,6 +54,7 @@ for i = 1, 10, 1 do
 end
 
 sbar.add("item", "space.end_pad", { 
+  position = "right",
   width = 6,
   background = {
     padding_left = 0,
@@ -75,7 +78,7 @@ local space_bracket = sbar.add("bracket", { '/space\\..*/' }, {
   }
 })
 
-space_bracket:subscribe("aerospace_workspace_change", function(env)
+local function update_spaces(env)
   sbar.exec("aerospace list-workspaces --monitor all --visible", function(result, exit_code)
     local visible_workspaces = result
     sbar.exec("aerospace list-workspaces --monitor all --empty no", function(result, exit_code)
@@ -114,4 +117,7 @@ space_bracket:subscribe("aerospace_workspace_change", function(env)
       end  
     end)
   end)
-end)
+end
+
+space_bracket:subscribe("aerospace_workspace_change", update_spaces)
+update_spaces({})

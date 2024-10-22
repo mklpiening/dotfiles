@@ -20,12 +20,8 @@ local apple = sbar.add("item", {
 	},
 	padding_left = 0,
 	padding_right = 0,
-	-- click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0",
+	click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0",
 })
-
-apple:subscribe("mouse.clicked", function(env)
-  sbar.trigger("swap_menus_and_spaces")
-end)
 
 -- Double border for apple using a single item bracket
 sbar.add("bracket", { apple.name }, {
