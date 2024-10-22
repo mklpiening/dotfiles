@@ -123,10 +123,10 @@ ctrl-k = 'focus up'
 ctrl-l = 'focus right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
-cmd-ctrl-h = 'move left'
-cmd-ctrl-j = 'move down'
-cmd-ctrl-k = 'move up'
-cmd-ctrl-l = 'move right'
+ctrl-shift-h = 'move left'
+ctrl-shift-j = 'move down'
+ctrl-shift-k = 'move up'
+ctrl-shift-l = 'move right'
 
 
 
