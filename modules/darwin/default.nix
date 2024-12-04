@@ -2,7 +2,7 @@
   # here go the darwin preferences and config items
   programs.zsh.enable = true;
   environment.shells = with pkgs; [ bash zsh ];
-  environment.loginShell = pkgs.zsh;
+  # environment.loginShell = pkgs.zsh;
   environment.systemPackages = [ pkgs.coreutils ];
   environment.variables = {
     ROS_DOMAIN_ID = "9";
@@ -18,9 +18,12 @@
 
   programs.nix-index.enable = true;
 
-  fonts.fontDir.enable = true;
-  fonts.fonts = [
-    pkgs.nerdfonts
+  fonts.packages = [
+    pkgs.nerd-fonts.iosevka
+    pkgs.nerd-fonts.iosevka-term
+    pkgs.nerd-fonts.noto
+    pkgs.nerd-fonts.mplus
+    pkgs.nerd-fonts.symbols-only
     pkgs.mplus-outline-fonts.githubRelease
   ];
   
