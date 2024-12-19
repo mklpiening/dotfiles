@@ -19,11 +19,18 @@
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
 
+    cocoapods # Xcode dependency manager
+
     # lunarvim # nvim distribution
 
     vcstool   # tool for multi repo use
 
     lazydocker # useful tui for docker
+
+    podman # podman container engine
+    podman-tui # tui for podman
+    podman-compose # docker compose alternative for podman
+    dive # look into docker image layers
 
     python311Full # python
     virtualenv    # python virtualenv
