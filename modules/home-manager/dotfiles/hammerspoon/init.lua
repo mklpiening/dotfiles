@@ -11,7 +11,6 @@ hs.notify.new({ title = "Hammerspoon", informativeText = "Config loaded" }):send
 local applicationHotkeys = {
 	e = { launchName = "Visual Studio Code", processName = "Code" },
 	a = { launchName = "Arc", processName = "Arc" },
-	r = { launchName = "Lichtblick", processName = "Lichtblick" },
 	s = { launchName = "Spotify", processName = "Spotify" },
 	n = { launchName = "Obsidian", processName = "Obsidian" },
 	g = { launchName = "ChatGPT", processName = "ChatGPT" },
