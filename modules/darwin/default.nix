@@ -11,7 +11,6 @@
   nix.extraOptions = ''
     experimental-features = nix-command flakes
   '';
-  services.nix-daemon.enable = true;
 
   system.keyboard.enableKeyMapping = true;
   system.keyboard.remapCapsLockToEscape = true;
@@ -22,7 +21,7 @@
     pkgs.nerd-fonts.iosevka
     pkgs.nerd-fonts.iosevka-term
     pkgs.nerd-fonts.noto
-    pkgs.nerd-fonts.mplus
+    # pkgs.nerd-fonts.mplus
     pkgs.nerd-fonts.symbols-only
     pkgs.mplus-outline-fonts.githubRelease
   ];
@@ -35,6 +34,8 @@
   system.defaults.NSGlobalDomain.KeyRepeat = 1;
   # backwards compat; don't change
   system.stateVersion = 4;
+
+  system.primaryUser = "malte";
 
   # make nix handle brews and mac apps
   homebrew = {
@@ -74,6 +75,6 @@
       "FelixKratz/formulae"       # sketchybar
     ];
   };
-  
+ 
   users.users.malte.home = "/Users/malte";
 }

@@ -147,8 +147,10 @@
 
       start_webtop = "docker run -d --name=webtop -e PUID=1000 -e PGID=1000 -e TZ=Europe/Berlin --shm-size=\"1gb\" --rm --net host lscr.io/linuxserver/webtop:alpine-kde";
       stop_webtop = "docker stop webtop";
-      
+
       cd = "z"; # replace 'cd' with 'z'
+
+      prs = "podman machine stop && podman machine start"; # restart podman
     };
     initExtra = ''
       setopt HIST_EXPIRE_DUPS_FIRST

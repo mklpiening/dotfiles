@@ -9,18 +9,64 @@ end)
 hs.notify.new({ title = "Hammerspoon", informativeText = "Config loaded" }):send()
 
 local applicationHotkeys = {
-	e = "Visual Studio Code",
-	a = "Arc",
-	r = "Foxglove Studio",
-	s = "Spotify",
-	n = "Obsidian",
-	g = "ChatGPT",
+	e = { launchName = "Visual Studio Code", processName = "Code" },
+	a = { launchName = "Arc", processName = "Arc" },
+	r = { launchName = "Lichtblick", processName = "Lichtblick" },
+	s = { launchName = "Spotify", processName = "Spotify" },
+	n = { launchName = "Obsidian", processName = "Obsidian" },
+	g = { launchName = "ChatGPT", processName = "ChatGPT" },
 }
 
-for key, app in pairs(applicationHotkeys) do
-	-- bind application
+local function launchOrFocusOrCycle(appInfo)
+	hs.application.launchOrFocus(appInfo.launchName)
+	return
+
+	-- local app = hs.application.get(appInfo.processName)
+	-- print("processName:", appInfo.processName, "app:", app)
+	-- if not app or not app:isRunning() then
+	-- 	print("not running")
+	-- 	hs.application.launchOrFocus(appInfo.launchName)
+	-- 	return
+	-- end
+
+	-- -- Only require isStandard, and include all windows (even on other Spaces)
+	-- local windows = hs.window.filter.new(false):setAppFilter(appInfo.processName, { currentSpace = nil }):getWindows()
+
+	-- -- Try to focus windows on other Spaces if needed
+	-- -- If the window is not on the current Space, use :focus() and :raise() to bring it forward
+
+	-- if #windows == 0 then
+	-- 	print("no windows")
+	-- 	hs.application.launchOrFocus(appInfo.launchName)
+	-- 	return
+	-- end
+
+	-- local frontmostApp = hs.application.frontmostApplication()
+	-- if frontmostApp:bundleID() ~= app:bundleID() then
+	-- 	print("not focused")
+	-- 	hs.application.launchOrFocus(appInfo.launchName)
+	-- 	return
+	-- end
+
+	-- if #windows > 1 then
+	-- 	print("selecting next window")
+	-- 	-- Sort, but handle missing lastFocusedTime
+	-- 	table.sort(windows, function(a, b)
+	-- 		local aTime = (a.lastFocusedTime and a:lastFocusedTime()) or 0
+	-- 		local bTime = (b.lastFocusedTime and b:lastFocusedTime()) or 0
+	-- 		return aTime < bTime
+	-- 	end)
+	-- 	local focused = app:focusedWindow()
+	-- 	local idx = hs.fnutils.indexOf(windows, focused) or 0
+	-- 	local nextIdx = (idx % #windows) + 1
+	-- 	windows[nextIdx]:raise()
+	-- 	windows[nextIdx]:focus()
+	-- end
+end
+
+for key, appInfo in pairs(applicationHotkeys) do
 	hs.hotkey.bind(hyper, key, function()
-		hs.application.launchOrFocus(app)
+		launchOrFocusOrCycle(appInfo)
 	end)
 end
 
@@ -32,7 +78,7 @@ hs.hotkey.bind(hyper, "d", function()
 	-- 	app:selectMenuItem({ "Shell", "New Window" })
 	-- else
 	-- 	print("not found")
-	hs.application.launchOrFocus("iTerm")
+	launchOrFocusOrCycle({ launchName = "Ghostty", processName = "Ghostty" })
 	-- end
 end)
 
@@ -71,7 +117,7 @@ hs.hotkey.bind(hyper, "return", function()
 
 	-- determine split behavior
 	local ver_split = false -- split vertiaclly - so up/down rather than left/right
-	local inv_split = false -- invert split? no inversion means primary window left or above dependent on horizontal or vertical split
+	local inv_split = true -- invert split? no inversion means primary window left or above dependent on horizontal or vertical split
 
 	local f_screen_ratio = f_screen:frame().w / f_screen:frame().h
 	if f_screen_ratio > 1 then
