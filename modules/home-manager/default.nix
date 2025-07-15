@@ -18,6 +18,7 @@
     m-cli     # handy mac tools
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
+    direnv    # load environment variables from .env files
 
     cocoapods # Xcode dependency manager
 
@@ -40,10 +41,6 @@
     CLICLOLOR = 1;
     EDITOR = "nvim";
   };
-
-  # just write 'fuck' to correct typos on the terminal
-  programs.thefuck.enable = true;
-  programs.thefuck.enableZshIntegration = true;
 
   # nicer 'top'
   programs.htop.enable = true;

@@ -17,50 +17,44 @@ local applicationHotkeys = {
 }
 
 local function launchOrFocusOrCycle(appInfo)
-	hs.application.launchOrFocus(appInfo.launchName)
-	return
+    -- Special handling for Visual Studio Code
+    if appInfo.processName == "Code" then
+        local app = hs.application.get(appInfo.processName)
+        
+        -- If VS Code is not running or not focused, launch or focus it
+        if not app or not app:isRunning() or not app:isFrontmost() then
+            hs.application.launchOrFocus(appInfo.launchName)
+            return
+        end
+        
+        -- VS Code is already focused, print available windows
+        print("VS Code is already focused. Available windows:")
+        
+		-- Try to get window titles from the "Window" menu
+		-- List all available menu items from the menu bar, including children
+		local menus = app:getMenuItems()
+		if menus then
+			local function printMenuItems(items, prefix)
+				prefix = prefix or ""
+				for _, item in ipairs(items) do
+					if item["AXTitle"] and item["AXEnabled"] ~= false then
+						print(prefix .. item["AXTitle"])
+					end
+					if item["AXChildren"] then
+						printMenuItems(item["AXChildren"], prefix .. (item["AXTitle"] or "") .. " > ")
+					end
+				end
+			end
+			printMenuItems(menus)
+		else
+			print("No menu items found for VS Code.")
+		end
 
-	-- local app = hs.application.get(appInfo.processName)
-	-- print("processName:", appInfo.processName, "app:", app)
-	-- if not app or not app:isRunning() then
-	-- 	print("not running")
-	-- 	hs.application.launchOrFocus(appInfo.launchName)
-	-- 	return
-	-- end
-
-	-- -- Only require isStandard, and include all windows (even on other Spaces)
-	-- local windows = hs.window.filter.new(false):setAppFilter(appInfo.processName, { currentSpace = nil }):getWindows()
-
-	-- -- Try to focus windows on other Spaces if needed
-	-- -- If the window is not on the current Space, use :focus() and :raise() to bring it forward
-
-	-- if #windows == 0 then
-	-- 	print("no windows")
-	-- 	hs.application.launchOrFocus(appInfo.launchName)
-	-- 	return
-	-- end
-
-	-- local frontmostApp = hs.application.frontmostApplication()
-	-- if frontmostApp:bundleID() ~= app:bundleID() then
-	-- 	print("not focused")
-	-- 	hs.application.launchOrFocus(appInfo.launchName)
-	-- 	return
-	-- end
-
-	-- if #windows > 1 then
-	-- 	print("selecting next window")
-	-- 	-- Sort, but handle missing lastFocusedTime
-	-- 	table.sort(windows, function(a, b)
-	-- 		local aTime = (a.lastFocusedTime and a:lastFocusedTime()) or 0
-	-- 		local bTime = (b.lastFocusedTime and b:lastFocusedTime()) or 0
-	-- 		return aTime < bTime
-	-- 	end)
-	-- 	local focused = app:focusedWindow()
-	-- 	local idx = hs.fnutils.indexOf(windows, focused) or 0
-	-- 	local nextIdx = (idx % #windows) + 1
-	-- 	windows[nextIdx]:raise()
-	-- 	windows[nextIdx]:focus()
-	-- end
+		return
+    end
+    
+    -- For all other applications, use the standard behavior
+    hs.application.launchOrFocus(appInfo.launchName)
 end
 
 for key, appInfo in pairs(applicationHotkeys) do
@@ -73,10 +67,11 @@ end
 hs.hotkey.bind(hyper, "d", function()
 	-- local app = hs.application.get("iTerm")
 	-- if app then
-	-- 	print("found")
-	-- 	app:selectMenuItem({ "Shell", "New Window" })
+	-- 	print("foun						print("Available windows in the Window menu:")- 	app:selectMenuItem({ "Shell", "New Window" })
 	-- else
-	-- 	print("not found")
+	-- 	print("not 
+								print(freshMenu)
+								print(freshMenu.AXTitle)found")
 	launchOrFocusOrCycle({ launchName = "Ghostty", processName = "Ghostty" })
 	-- end
 end)
