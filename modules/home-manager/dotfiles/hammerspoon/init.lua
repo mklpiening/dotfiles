@@ -69,9 +69,9 @@ hs.hotkey.bind(hyper, "d", function()
 	-- if app then
 	-- 	print("foun						print("Available windows in the Window menu:")- 	app:selectMenuItem({ "Shell", "New Window" })
 	-- else
-	-- 	print("not 
-								print(freshMenu)
-								print(freshMenu.AXTitle)found")
+	-- 	print("not found")
+	-- 	print(freshMenu)
+	-- 	print(freshMenu.AXTitle)
 	launchOrFocusOrCycle({ launchName = "Ghostty", processName = "Ghostty" })
 	-- end
 end)
