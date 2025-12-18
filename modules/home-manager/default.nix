@@ -33,7 +33,7 @@
     podman-compose # docker compose alternative for podman
     dive # look into docker image layers
 
-    python314Full # python
+    python314 # python
     python314Packages.setuptools
     virtualenv    # python virtualenv
   ];
@@ -76,28 +76,35 @@
   programs.git = {
     enable = true;
     # diff-so-fancy.enable = true;
-    delta.enable = true;
-    delta.options = {
-      side-by-side = true;
-      syntax-theme = "base16";
-    };
 
     lfs.enable = true;
     
-    userEmail = "mkl.piening@gmail.com";
-    userName = "Malte kleine Piening";
+    settings = {
+      user = {
+        email = "mkl.piening@gmail.com";
+        name = "Malte kleine Piening";
+      };
 
-    aliases = {
-      l1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
-      l2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
-      l = "!git l1";
-      squash = "!f(){ git reset --soft HEAD~\${1} && git commit --edit -m\"\$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f";
-    };
+      aliases = {
+        l1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
+        l2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
+        l = "!git l1";
+        squash = "!f(){ git reset --soft HEAD~\${1} && git commit --edit -m\"\$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f";
+      };
 
-    extraConfig = {
       init.defaultBranch = "main";
       push.autoSetupRemote = true;
       pull.rebase = true;
+    };
+  };
+
+  # delta diffs
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      side-by-side = true;
+      syntax-theme = "base16";
     };
   };
 

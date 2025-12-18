@@ -43,7 +43,7 @@
     caskArgs.no_quarantine = true;
     global.brewfile = true;
     masApps = {
-      Magnet = 441258766;       # windows-like window 'snapping'
+      # Magnet = 441258766;       # windows-like window 'snapping'
     }; # mac app store apps
     casks = [ 
       "easy-move-plus-resize"   # move and resize windows with hotkeys + mouse
