@@ -33,7 +33,8 @@
     podman-compose # docker compose alternative for podman
     dive # look into docker image layers
 
-    python311Full # python
+    python314Full # python
+    python314Packages.setuptools
     virtualenv    # python virtualenv
   ];
   home.sessionVariables = {
