@@ -19,6 +19,7 @@
     comma     # quickly run commands without searching for the correct package name
     ncdu      # more performant "du"
     direnv    # load environment variables from .env files
+    calculix-ccx
 
     cocoapods # Xcode dependency manager
 
@@ -36,6 +37,8 @@
     python314 # python
     python314Packages.setuptools
     virtualenv    # python virtualenv
+
+    opencode # open coding agent
   ];
   home.sessionVariables = {
     PAGER = "less";

@@ -24,6 +24,7 @@
     # pkgs.nerd-fonts.mplus
     pkgs.nerd-fonts.symbols-only
     pkgs.mplus-outline-fonts.githubRelease
+    pkgs.maple-mono.NF-unhinted
   ];
   
   system.defaults.finder.AppleShowAllExtensions = true;
