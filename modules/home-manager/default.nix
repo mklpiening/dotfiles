@@ -38,7 +38,7 @@
     python314Packages.setuptools
     virtualenv    # python virtualenv
 
-    opencode # open coding agent
+    claude-code # claude code agent
   ];
   home.sessionVariables = {
     PAGER = "less";
