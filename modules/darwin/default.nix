@@ -70,6 +70,9 @@
       "lua"
       "switchaudio-osx"
       "nowplaying-cli"
+
+      # tmux like thing for agents
+      "herdr"
     ];
     taps = [
       "osrf/simulation"           # gazebo

@@ -29,9 +29,9 @@
 
     lazydocker # useful tui for docker
 
-    podman # podman container engine
-    podman-tui # tui for podman
-    podman-compose # docker compose alternative for podman
+    # podman # podman container engine
+    # podman-tui # tui for podman
+    # podman-compose # docker compose alternative for podman
     dive # look into docker image layers
 
     python314 # python
