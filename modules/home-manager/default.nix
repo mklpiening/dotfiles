@@ -29,9 +29,9 @@
 
     lazydocker # useful tui for docker
 
-    # podman # podman container engine
-    # podman-tui # tui for podman
-    # podman-compose # docker compose alternative for podman
+    podman # podman container engine
+    podman-tui # tui for podman
+    podman-compose # docker compose alternative for podman
     dive # look into docker image layers
 
     python314 # python
@@ -81,18 +81,18 @@
     # diff-so-fancy.enable = true;
 
     lfs.enable = true;
+
+    aliases = {
+      l1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
+      l2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
+      l = "!git l1";
+      squash = "!f(){ git reset --soft HEAD~\${1} && git commit --edit -m\"\$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f";
+    };
     
     settings = {
       user = {
         email = "mkl.piening@gmail.com";
         name = "Malte kleine Piening";
-      };
-
-      aliases = {
-        l1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
-        l2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
-        l = "!git l1";
-        squash = "!f(){ git reset --soft HEAD~\${1} && git commit --edit -m\"\$(git log --format=%B --reverse HEAD..HEAD@{1})\"; };f";
       };
 
       init.defaultBranch = "main";
@@ -159,6 +159,8 @@
       cd = "z"; # replace 'cd' with 'z'
 
       prs = "podman machine stop && podman machine start"; # restart podman
+
+      reviewr = "herdr plugin action invoke open --plugin persiyanov.reviewr && sleep 0.5 && exit";
     };
     initExtra = ''
       setopt HIST_EXPIRE_DUPS_FIRST
@@ -167,6 +169,8 @@
       setopt HIST_IGNORE_SPACE
       setopt HIST_FIND_NO_DUPS
       setopt HIST_SAVE_NO_DUPS
+
+      # export PATH="/opt/podman/bin:$PATH"
 
       source /Users/malte/Documents/nr/dev/dev_tooling/setup/host/setup.zsh
     '';
